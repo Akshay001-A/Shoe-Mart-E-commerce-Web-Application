@@ -1,38 +1,200 @@
-.App {
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+
+  background-color: #f5f5f5;
+}
+
+.home {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.search-bar {
+  width: 300px;
+
+  padding: 12px;
+
+  border-radius: 8px;
+  border: 1px solid gray;
+
+  margin-top: 20px;
+}
+
+.products-container {
+
+  display: flex;
+
+  justify-content: center;
+
+  gap: 30px;
+
+  margin-top: 50px;
+
+  flex-wrap: wrap;
+}
+
+.cart-page {
+
+  padding: 40px;
+}
+
+.cart-page h1 {
+
+  margin-bottom: 30px;
+}
+
+.cart-item {
+
+  background-color: white;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 20px 30px;
+
+  margin-bottom: 20px;
+
+  border-radius: 12px;
+
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.cart-left {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+}
+
+.cart-image {
+
+  width: 140px;
+
+  height: 140px;
+
+  object-fit: cover;
+
+  border-radius: 10px;
+}
+
+.cart-details h3 {
+
+  margin: 0;
+
+  font-size: 24px;
+}
+
+.cart-details p {
+
+  color: gray;
+
+  margin-top: 8px;
+}
+
+.cart-price {
+
+  font-size: 28px;
+
+  font-weight: bold;
+}
+
+
+
+.remove-btn {
+
+  margin-top: 10px;
+
+  background-color: red;
+
+  color: white;
+
+  border: none;
+
+  padding: 8px 15px;
+
+  border-radius: 5px;
+
+  cursor: pointer;
+}
+
+.total-section {
+
+  margin-top: 30px;
+
+  text-align: right;
+}
+
+.checkout-btn {
+
+  background-color: black;
+
+  color: white;
+
+  border: none;
+
+  padding: 12px 25px;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  margin-top: 10px;
+}
+
+
+.profile-page {
+
+  padding: 40px;
+
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.profile-card {
+
+  background-color: white;
+
+  width: 400px;
+
+  margin: auto;
+
+  padding: 30px;
+
+  border-radius: 12px;
+
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.profile-card h2 {
+
+  margin-bottom: 20px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.profile-card p {
+
+  margin: 10px 0;
+
+  color: gray;
+}
+
+.logout-btn {
+
+  margin-top: 20px;
+
+  background-color: red;
+
   color: white;
-}
 
-.App-link {
-  color: #61dafb;
-}
+  border: none;
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  padding: 12px 25px;
+
+  border-radius: 8px;
+
+  cursor: pointer;
 }
