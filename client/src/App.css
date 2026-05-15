@@ -199,3 +199,109 @@ body {
 
   cursor: pointer;
 }
+
+.admin-page {
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 40px;
+
+}
+
+.admin-page h1 {
+
+  font-size: 45px;
+
+  margin-bottom: 10px;
+
+}
+
+.admin-page h2 {
+
+  margin-bottom: 25px;
+
+}
+
+.admin-form {
+
+  width: 450px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 20px;
+
+  background: white;
+
+  padding: 35px;
+
+  border-radius: 20px;
+
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+
+}
+
+.admin-form input,
+.admin-form textarea {
+
+  padding: 16px;
+
+  border: 1px solid #ccc;
+
+  border-radius: 12px;
+
+  font-size: 16px;
+
+  outline: none;
+
+}
+
+.admin-form input:focus,
+.admin-form textarea:focus {
+
+  border: 2px solid black;
+
+}
+
+.admin-form textarea {
+
+  height: 120px;
+
+  resize: none;
+
+}
+
+.admin-form button {
+
+  padding: 16px;
+
+  background: black;
+
+  color: white;
+
+  border: none;
+
+  border-radius: 12px;
+
+  font-size: 18px;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+
+}
+
+.admin-form button:hover {
+
+  background: #333;
+
+  transform: scale(1.02);
+
+}

@@ -38,6 +38,7 @@ const registerUser = async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            isAdmin: user.isAdmin,
             token,
         });
 
@@ -93,12 +94,14 @@ const loginUser = async (req, res) => {
             }
         );
 
-        res.status(200).json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            token,
-        });
+       res.status(200).json({
+  _id: user._id,
+  name: user.name,
+  email: user.email,
+  isAdmin: user.isAdmin,
+  token,
+});
+        
 
     } catch (error) {
 

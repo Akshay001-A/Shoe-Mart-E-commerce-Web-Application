@@ -1,53 +1,120 @@
 import "./Navbar.css";
 
-function Navbar({ setShowCart, setShowProfile }) {
+function Navbar({
+
+  setShowCart,
+  setShowProfile,
+  setShowAdminProducts,
+  setShowOrders,
+
+}) {
+
+  const userInfo = JSON.parse(
+    localStorage.getItem("userInfo")
+  );
 
   return (
 
     <nav className="navbar">
 
-      <h2
-        className="logo"
-        onClick={() => {
-          setShowCart(false);
-          setShowProfile(false);
-        }}
-      >
+      <h2 className="logo">
         Shoe Mart
       </h2>
 
-      <ul className="nav-links">
+      <div className="nav-links">
 
-        <li
+        <button
           onClick={() => {
+
             setShowCart(false);
+
             setShowProfile(false);
+
+            setShowAdminProducts(false);
+
+            setShowOrders(false);
+
           }}
         >
           Home
-        </li>
+        </button>
 
-        <li
+        <button
           onClick={() => {
+
             setShowCart(true);
+
             setShowProfile(false);
+
+            setShowAdminProducts(false);
+
+            setShowOrders(false);
+
           }}
         >
           Cart
-        </li>
+        </button>
 
-        <li
+        <button
           onClick={() => {
+
             setShowProfile(true);
+
             setShowCart(false);
+
+            setShowAdminProducts(false);
+
+            setShowOrders(false);
+
           }}
         >
           Profile
-        </li>
+        </button>
 
-      </ul>
+        {userInfo?.isAdmin && (
+
+          <>
+
+            <button
+              onClick={() => {
+
+                setShowAdminProducts(true);
+
+                setShowCart(false);
+
+                setShowProfile(false);
+
+                setShowOrders(false);
+
+              }}
+            >
+              Add Shoes
+            </button>
+
+            <button
+              onClick={() => {
+
+                setShowOrders(true);
+
+                setShowCart(false);
+
+                setShowProfile(false);
+
+                setShowAdminProducts(false);
+
+              }}
+            >
+              Orders
+            </button>
+
+          </>
+
+        )}
+
+      </div>
 
     </nav>
+
   );
 }
 

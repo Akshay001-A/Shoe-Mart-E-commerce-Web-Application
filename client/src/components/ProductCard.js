@@ -1,29 +1,61 @@
 import "./ProductCard.css";
 
-function ProductCard(props) {
+function ProductCard({
+  name,
+  brand,
+  category,
+  description,
+  price,
+  image,
+  countInStock,
+  addToCart,
+}) {
+
+  // GET USER INFO
+  const userInfo = JSON.parse(
+    localStorage.getItem("userInfo")
+  );
 
   return (
 
     <div className="product-card">
 
       <img
-        src={props.image}
-        alt={props.name}
+        src={image}
+        alt={name}
         className="product-image"
       />
 
-      <h3>{props.name}</h3>
+      <h2>{name}</h2>
 
-      <p>{props.brand}</p>
+      <p>{brand}</p>
 
-      <h2>₹{props.price}</h2>
+      <p className="category">
+        {category}
+      </p>
 
-      <button onClick={props.addToCart}>
+      <p className="description">
+        {description}
+      </p>
+
+      <h1>₹{price}</h1>
+
+      {/* SHOW STOCK ONLY FOR ADMIN */}
+
+      {userInfo?.isAdmin && (
+        <p className="stock">
+          Stock: {countInStock}
+        </p>
+      )}
+
+      <button onClick={addToCart}>
         Add to Cart
       </button>
 
     </div>
+
   );
+
 }
 
 export default ProductCard;
