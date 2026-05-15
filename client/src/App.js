@@ -13,7 +13,7 @@ function App() {
 
   const [cartItems, setCartItems] = useState([]);
 
-  const [search, setSearch] = useState("");
+ 
 
   const [showCart, setShowCart] = useState(false);
 
@@ -639,12 +639,30 @@ const updateOrderStatus = async (
 };
 
   // SEARCH FILTER
+const [search, setSearch] =
+  useState("");
 
-  const filteredProducts = products.filter(
-    (product) =>
-      product.name
-        .toLowerCase()
-        .includes(search.toLowerCase())
+const filteredProducts =
+  products.filter((product) =>
+
+    product.name
+      .toLowerCase()
+      .includes(
+        search.toLowerCase()
+      ) ||
+
+    product.brand
+      .toLowerCase()
+      .includes(
+        search.toLowerCase()
+      ) ||
+
+    product.category
+      .toLowerCase()
+      .includes(
+        search.toLowerCase()
+      )
+
   );
 
   // USER INFO
@@ -881,8 +899,11 @@ return (
     setShowManageShoes
   }
   setShowMyOrders={
-  setShowMyOrders
-}
+    setShowMyOrders
+  }
+
+  search={search}
+  setSearch={setSearch}
 />
 
       {/* ADMIN PAGE */}
@@ -1477,28 +1498,7 @@ return (
 
         <>
 
-          <div className="home">
-
-            <h1>
-              Welcome to Shoe Mart 👟
-            </h1>
-
-            <p>
-              Discover the best shoes
-              with premium quality.
-            </p>
-
-            <input
-              type="text"
-              placeholder="Search shoes..."
-              className="search-bar"
-              value={search}
-              onChange={(e) =>
-                setSearch(e.target.value)
-              }
-            />
-
-          </div>
+         
 
           <div className="products-container">
 
