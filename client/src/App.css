@@ -37,6 +37,37 @@ body {
 
 }
 
+.product-card {
+
+  background: white;
+
+  border-radius: 20px;
+
+  padding: 25px;
+
+  width: 280px;
+
+  text-align: center;
+
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+
+}
+
+.product-card:hover {
+
+  transform:
+    translateY(-10px)
+    scale(1.03);
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.2);
+
+}
+
 @media (max-width: 1100px) {
 
   .products-container {
@@ -623,5 +654,49 @@ body {
   color: white;
 
   font-size: 16px;
+
+}
+
+
+
+/* QUANTITY CONTROLS */
+
+.qty-controls {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 10px;
+
+}
+
+.qty-controls button {
+
+  width: 30px;
+
+  height: 30px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: black;
+
+  color: white;
+
+  cursor: pointer;
+
+  font-size: 18px;
+
+}
+
+.qty-controls span {
+
+  font-size: 18px;
+
+  font-weight: bold;
 
 }

@@ -118,7 +118,7 @@ const [editStock, setEditStock] =
 
         name: item.name,
 
-        quantity: 1,
+        quantity: item.quantity,
 
         image: item.image,
 
@@ -129,7 +129,7 @@ const [editStock, setEditStock] =
       })),
 
       totalPrice: cartItems.reduce(
-        (acc, item) => acc + item.price,
+        (acc, item) => acc + item.price * item.quantity,
         0
       ),
 
@@ -163,55 +163,145 @@ const [editStock, setEditStock] =
     );
 
     alert("Order Placed Successfully");
+    
 
     setCartItems([]);
+    fetchProducts();
+
+  } catch (error) {
+
+  alert(
+
+    error.response?.data?.message ||
+
+    "Order Failed"
+
+  );
+
+}
+
+};
+
+  // FETCH PRODUCTS
+const fetchProducts = async () => {
+
+  try {
+
+    const { data } = await axios.get(
+      "http://localhost:5000/api/products"
+    );
+
+    setProducts(data);
 
   } catch (error) {
 
     console.log(error);
 
-    alert("Order Failed");
-
   }
 
 };
 
-  // FETCH PRODUCTS
+useEffect(() => {
 
-  useEffect(() => {
+  fetchProducts();
 
-    const fetchProducts = async () => {
+  fetchOrders();
 
-      try {
-
-        const { data } = await axios.get(
-          "http://localhost:5000/api/products"
-        );
-
-        setProducts(data);
-
-      } catch (error) {
-
-        console.log(error.response.data);
-
-      }
-
-    };
-
-    fetchProducts();
-    fetchOrders();
-
-  }, []);
+}, []);
 
   // ADD TO CART
 
   const addToCart = (product) => {
 
-    setCartItems([...cartItems, product]);
+  const existItem = cartItems.find(
+    (x) => x._id === product._id
+  );
 
-    alert(product.name + " added to cart");
+  if (existItem) {
 
-  };
+    setCartItems(
+
+      cartItems.map((x) =>
+
+        x._id === product._id
+
+          ? {
+              ...x,
+              quantity:
+                x.quantity + 1 <=
+                x.countInStock
+                  ? x.quantity + 1
+                  : x.quantity,
+            }
+
+          : x
+      )
+    );
+
+  } else {
+
+    setCartItems([
+      ...cartItems,
+      {
+        ...product,
+        quantity: 1,
+      },
+    ]);
+
+  }
+  alert(product.name + " added to cart");
+
+};
+
+const updateQuantity = (
+
+  id,
+  action
+
+) => {
+
+  setCartItems(
+
+    cartItems.map((item) => {
+
+      if (item._id === id) {
+
+        if (
+          action === "increase" &&
+          item.quantity <
+            item.countInStock
+        ) {
+
+          return {
+            ...item,
+            quantity:
+              item.quantity + 1,
+          };
+
+        }
+
+        if (
+          action === "decrease" &&
+          item.quantity > 1
+        ) {
+
+          return {
+            ...item,
+            quantity:
+              item.quantity - 1,
+          };
+
+        }
+
+      }
+
+      return item;
+
+    })
+    
+  );
+
+};
 
   // REMOVE FROM CART
 
@@ -862,10 +952,41 @@ return (
                     </div>
 
                     <div>
+<div className="cart-price">
 
-                      <div className="cart-price">
-                        ₹{item.price}
-                      </div>
+  ₹{item.price}
+
+  <div className="qty-controls">
+
+    <button
+      onClick={() =>
+        updateQuantity(
+          item._id,
+          "decrease"
+        )
+      }
+    >
+      -
+    </button>
+
+    <span>
+      {item.quantity}
+    </span>
+
+    <button
+      onClick={() =>
+        updateQuantity(
+          item._id,
+          "increase"
+        )
+      }
+    >
+      +
+    </button>
+
+  </div>
+
+</div>
 
                       <button
                         className="remove-btn"
@@ -890,7 +1011,7 @@ return (
                   Total: ₹
                   {cartItems.reduce(
                     (acc, item) =>
-                      acc + item.price,
+                      acc + item.price * item.quantity,
                     0
                   )}
 

@@ -1,4 +1,5 @@
 const Order = require("../models/Order");
+const Product = require("../models/Product");
 
 
 // CREATE ORDER
@@ -23,6 +24,36 @@ const createOrder = async (req, res) => {
             totalPrice,
 
         });
+        for (const item of orderItems) {
+
+    const product =
+        await Product.findById(
+            item.product
+        );
+
+    if (product) {
+
+        if (
+            product.countInStock <
+            item.quantity
+        ) {
+
+            return res.status(400).json({
+                message:
+                    product.name +
+                    " Out Of Stock",
+            });
+
+        }
+
+        product.countInStock -=
+            item.quantity;
+
+        await product.save();
+
+    }
+
+}
 
         res.status(201).json(order);
 
