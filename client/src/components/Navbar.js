@@ -6,6 +6,7 @@ function Navbar({
   setShowProfile,
   setShowAdminProducts,
   setShowOrders,
+  setShowManageShoes,
 
 }) {
 
@@ -34,6 +35,8 @@ function Navbar({
 
             setShowOrders(false);
 
+            setShowManageShoes(false);
+
           }}
         >
           Home
@@ -50,6 +53,8 @@ function Navbar({
 
             setShowOrders(false);
 
+            setShowManageShoes(false);
+
           }}
         >
           Cart
@@ -65,6 +70,8 @@ function Navbar({
             setShowAdminProducts(false);
 
             setShowOrders(false);
+
+            setShowManageShoes(false);
 
           }}
         >
@@ -86,9 +93,29 @@ function Navbar({
 
                 setShowOrders(false);
 
+                setShowManageShoes(false);
+
               }}
             >
               Add Shoes
+            </button>
+
+            <button
+              onClick={() => {
+
+                setShowManageShoes(true);
+
+                setShowCart(false);
+
+                setShowProfile(false);
+
+                setShowAdminProducts(false);
+
+                setShowOrders(false);
+
+              }}
+            >
+              Manage Shoes
             </button>
 
             <button
@@ -101,6 +128,8 @@ function Navbar({
                 setShowProfile(false);
 
                 setShowAdminProducts(false);
+
+                setShowManageShoes(false);
 
               }}
             >
@@ -116,6 +145,7 @@ function Navbar({
     </nav>
 
   );
+
 }
 
 export default Navbar;
