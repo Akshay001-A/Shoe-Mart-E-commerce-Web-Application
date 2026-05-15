@@ -700,3 +700,150 @@ body {
   font-weight: bold;
 
 }
+
+
+/* ORDER STATUS */
+
+.order-card select {
+
+  margin-top: 10px;
+
+  padding: 10px;
+
+  border-radius: 10px;
+
+  border: 1px solid #ccc;
+
+  font-size: 15px;
+
+}
+
+
+.payment-popup-overlay {
+
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0,0,0,0.6);
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  z-index: 999;
+
+}
+
+.payment-popup {
+
+  background: white;
+
+  width: 400px;
+
+  padding: 30px;
+
+  border-radius: 20px;
+
+  text-align: center;
+
+  animation: popupAnim 0.3s ease;
+
+}
+
+.payment-popup h2 {
+
+  margin-bottom: 20px;
+
+}
+
+.fake-payment-box {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+
+  margin-top: 20px;
+
+}
+
+.fake-payment-box input {
+
+  padding: 12px;
+
+  border-radius: 10px;
+
+  border: 1px solid #ccc;
+
+}
+
+.payment-buttons {
+
+  display: flex;
+
+  justify-content: center;
+
+  gap: 15px;
+
+  margin-top: 25px;
+
+}
+
+.pay-btn {
+
+  background: black;
+
+  color: white;
+
+  border: none;
+
+  padding: 12px 25px;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+}
+
+.cancel-btn {
+
+  background: red;
+
+  color: white;
+
+  border: none;
+
+  padding: 12px 25px;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+}
+
+@keyframes popupAnim {
+
+  from {
+
+    transform: scale(0.7);
+
+    opacity: 0;
+
+  }
+
+  to {
+
+    transform: scale(1);
+
+    opacity: 1;
+
+  }
+
+}

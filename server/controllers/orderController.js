@@ -1,4 +1,5 @@
 const Order = require("../models/Order");
+
 const Product = require("../models/Product");
 
 
@@ -8,52 +9,68 @@ const createOrder = async (req, res) => {
     try {
 
         const {
-            orderItems,
-            shippingAddress,
-            totalPrice,
-        } = req.body;
 
-        const order = await Order.create({
+    orderItems,
 
-            user: req.user._id,
+    shippingAddress,
 
-            orderItems,
+    totalPrice,
 
-            shippingAddress,
+    paymentMethod,
 
-            totalPrice,
+    isPaid,
 
-        });
+} = req.body;
+
+       const order = await Order.create({
+
+    user: req.user._id,
+
+    orderItems,
+
+    shippingAddress,
+
+    totalPrice,
+
+    paymentMethod,
+
+    isPaid,
+
+    orderStatus: "Pending",
+
+});
+        // REDUCE STOCK
+
         for (const item of orderItems) {
 
-    const product =
-        await Product.findById(
-            item.product
-        );
+            const product =
+                await Product.findById(
+                    item.product
+                );
 
-    if (product) {
+            if (product) {
 
-        if (
-            product.countInStock <
-            item.quantity
-        ) {
+                if (
+                    product.countInStock <
+                    item.quantity
+                ) {
 
-            return res.status(400).json({
-                message:
-                    product.name +
-                    " Out Of Stock",
-            });
+                    return res.status(400).json({
+                        message:
+                            product.name +
+                            " Out Of Stock",
+                    });
+
+                }
+
+                product.countInStock -=
+                    item.quantity;
+
+                await product.save();
+
+            }
 
         }
-
-        product.countInStock -=
-            item.quantity;
-
-        await product.save();
-
-    }
-
-}
 
         res.status(201).json(order);
 
@@ -111,6 +128,42 @@ const getOrders = async (req, res) => {
 };
 
 
+// UPDATE ORDER STATUS
+const updateOrderStatus = async (req, res) => {
+
+    try {
+
+        const order = await Order.findById(
+            req.params.id
+        );
+
+        if (!order) {
+
+            return res.status(404).json({
+                message: "Order Not Found",
+            });
+
+        }
+
+        order.orderStatus =
+            req.body.orderStatus;
+
+        const updatedOrder =
+            await order.save();
+
+        res.json(updatedOrder);
+
+    } catch (error) {
+
+        res.status(500).json({
+            message: error.message,
+        });
+
+    }
+
+};
+
+
 module.exports = {
 
     createOrder,
@@ -118,5 +171,7 @@ module.exports = {
     getMyOrders,
 
     getOrders,
+
+    updateOrderStatus,
 
 };

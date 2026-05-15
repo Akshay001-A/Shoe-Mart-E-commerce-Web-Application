@@ -32,6 +32,15 @@ function App() {
   const [showOrders,
     setShowOrders] =
     useState(false);
+    //Customer State
+
+    const [showMyOrders,
+setShowMyOrders] =
+useState(false);
+
+const [myOrders,
+setMyOrders] =
+useState([]);
 
   // ADMIN STATES
 
@@ -70,6 +79,14 @@ const [editImage, setEditImage] =
 const [editStock, setEditStock] =
   useState("");
 
+const [showPaymentPopup,
+setShowPaymentPopup] =
+useState(false);
+
+const [paymentMethod,
+setPaymentMethod] =
+useState("COD");
+
   
 
     const fetchOrders = async () => {
@@ -102,7 +119,90 @@ const [editStock, setEditStock] =
   }
 
 };
-    const checkoutHandler = async () => {
+
+const fetchMyOrders = async () => {
+
+  try {
+
+    const userInfo = JSON.parse(
+
+      localStorage.getItem(
+        "userInfo"
+      )
+
+    );
+
+    const { data } = await axios.get(
+
+      "http://localhost:5000/api/orders/myorders",
+
+      {
+
+        headers: {
+
+          Authorization:
+            `Bearer ${userInfo.token}`,
+
+        },
+
+      }
+
+    );
+
+    setMyOrders(data);
+
+  } catch (error) {
+
+    console.log(error);
+
+  }
+
+};
+const checkoutHandler = async () => {
+
+  try {
+
+    const { data } = await axios.get(
+      "http://localhost:5000/api/products"
+    );
+
+    for (const cartItem of cartItems) {
+
+      const latestProduct = data.find(
+        (product) =>
+          product._id === cartItem._id
+      );
+
+      if (
+        !latestProduct ||
+        latestProduct.countInStock <= 0 ||
+        latestProduct.countInStock <
+          cartItem.quantity
+      ) {
+
+        alert(
+          cartItem.name +
+          " Out Of Stock"
+        );
+
+        return;
+      }
+
+    }
+
+    // ONLY OPEN POPUP IF STOCK EXISTS
+
+    setShowPaymentPopup(true);
+
+  } catch (error) {
+
+    alert("Stock Check Failed");
+
+  }
+
+};
+
+const placeOrderHandler = async () => {
 
   try {
 
@@ -129,7 +229,8 @@ const [editStock, setEditStock] =
       })),
 
       totalPrice: cartItems.reduce(
-        (acc, item) => acc + item.price * item.quantity,
+        (acc, item) =>
+          acc + item.price * item.quantity,
         0
       ),
 
@@ -151,24 +252,51 @@ const [editStock, setEditStock] =
 
       "http://localhost:5000/api/orders",
 
-      orderData,
+      {
+
+        ...orderData,
+
+        paymentMethod,
+
+        isPaid:
+          paymentMethod !== "COD",
+
+      },
 
       {
+
         headers: {
+
           Authorization:
             `Bearer ${userInfo.token}`,
+
         },
+
       }
 
     );
 
-    alert("Order Placed Successfully");
-    
+    alert(
+
+      paymentMethod === "ONLINE"
+
+        ? "Payment Successful ✅"
+
+        : "Order Placed Successfully ✅"
+
+    );
+
+    setShowPaymentPopup(false);
 
     setCartItems([]);
+
     fetchProducts();
 
+    fetchMyOrders();
+
   } catch (error) {
+
+  
 
   alert(
 
@@ -201,13 +329,6 @@ const fetchProducts = async () => {
 
 };
 
-useEffect(() => {
-
-  fetchProducts();
-
-  fetchOrders();
-
-}, []);
 
   // ADD TO CART
 
@@ -343,6 +464,8 @@ const updateQuantity = (
 
 };
 
+
+
 const openEditForm = (product) => {
 
   setEditingProduct(product);
@@ -415,6 +538,64 @@ const updateProduct = async () => {
 
 };
 
+
+const updateOrderStatus = async (
+
+  orderId,
+
+  status
+
+) => {
+
+  try {
+
+    const userInfo = JSON.parse(
+
+      localStorage.getItem(
+
+        "userInfo"
+
+      )
+
+    );
+
+    await axios.put(
+
+      `http://localhost:5000/api/orders/${orderId}/status`,
+
+      {
+
+        orderStatus: status,
+
+      },
+
+      {
+
+        headers: {
+
+          Authorization:
+            `Bearer ${userInfo.token}`,
+
+        },
+
+      }
+
+    );
+
+    fetchOrders();
+
+    alert("Order Status Updated");
+
+  } catch (error) {
+
+    console.log(error);
+
+    alert("Status Update Failed");
+
+  }
+
+};
+
   // ADD NEW SHOE
 
  const addNewShoe = async () => {
@@ -471,6 +652,23 @@ const updateProduct = async () => {
   const userInfo = JSON.parse(
     localStorage.getItem("userInfo")
   );
+  useEffect(() => {
+
+  fetchProducts();
+
+  if (userInfo) {
+
+    fetchMyOrders();
+
+  }
+
+  if (userInfo?.isAdmin) {
+
+    fetchOrders();
+
+  }
+
+}, [userInfo]);
 
   // LOGIN / REGISTER FLOW
 
@@ -590,6 +788,86 @@ return (
 
     {editPopup}
 
+    {showPaymentPopup && (
+
+  <div className="payment-popup-overlay">
+
+    <div className="payment-popup">
+
+      <h2>
+        Confirm Payment
+      </h2>
+
+      <p>
+
+        Payment Method:
+        <strong>
+          {paymentMethod}
+        </strong>
+
+      </p>
+
+      <h3>
+
+        Total: ₹
+        {cartItems.reduce(
+
+          (acc, item) =>
+
+            acc +
+            item.price *
+            item.quantity,
+
+          0
+
+        )}
+
+      </h3>
+
+      {paymentMethod !== "COD" && (
+
+        <div className="fake-payment-box">
+
+          <input
+            type="text"
+            placeholder="Card / UPI ID"
+          />
+
+          <input
+            type="password"
+            placeholder="Password / PIN"
+          />
+
+        </div>
+
+      )}
+
+      <div className="payment-buttons">
+
+        <button
+          className="pay-btn"
+          onClick={placeOrderHandler}
+        >
+          Pay Now
+        </button>
+
+        <button
+          className="cancel-btn"
+          onClick={() =>
+            setShowPaymentPopup(false)
+          }
+        >
+          Cancel
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+)}
+
     <div>
 
       <Navbar
@@ -602,6 +880,9 @@ return (
   setShowManageShoes={
     setShowManageShoes
   }
+  setShowMyOrders={
+  setShowMyOrders
+}
 />
 
       {/* ADMIN PAGE */}
@@ -801,11 +1082,142 @@ return (
                   ? " Paid"
                   : " Not Paid"}
               </p>
+              <p>
+
+  Status:
+  {order.orderStatus}
+
+</p>
+
+<select
+
+  value={order.orderStatus}
+
+  onChange={(e) =>
+
+    updateOrderStatus(
+
+      order._id,
+
+      e.target.value
+
+    )
+
+  }
+
+>
+
+  <option value="Pending">
+    Pending
+  </option>
+
+  <option value="Shipped">
+    Shipped
+  </option>
+
+  <option value="Delivered">
+    Delivered
+  </option>
+
+</select>
 
             </div>
 
 
             {/* RIGHT SIDE */}
+
+            <div className="order-right">
+
+              <h3>Products:</h3>
+
+              <div className="order-items">
+
+                {order.orderItems.map(
+                  (item, index) => (
+
+                    <div
+                      key={index}
+                      className="order-item"
+                    >
+
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                      />
+
+                      <div>
+
+                        <h4>
+                          {item.name}
+                        </h4>
+
+                        <p>
+                          ₹{item.price}
+                        </p>
+
+                        <p>
+                          Qty:
+                          {item.quantity}
+                        </p>
+
+                      </div>
+
+                    </div>
+
+                  )
+                )}
+
+              </div>
+
+            </div>
+
+          </div>
+
+        ))
+
+      )}
+
+    </div>
+
+  </div>
+
+
+) : showMyOrders ? (
+
+  <div className="admin-page">
+
+    <h1>
+      My Orders 📦
+    </h1>
+
+    <div className="orders-container">
+
+      {myOrders.length === 0 ? (
+
+        <p>No Orders Found</p>
+
+      ) : (
+
+        myOrders.map((order) => (
+
+          <div
+            key={order._id}
+            className="order-card"
+          >
+
+            <div className="order-left">
+
+              <p>
+                Total:
+                ₹{order.totalPrice}
+              </p>
+
+              <p>
+                Status:
+                {order.orderStatus}
+              </p>
+
+            </div>
 
             <div className="order-right">
 
@@ -1017,12 +1429,40 @@ return (
 
                 </h2>
 
-                <button
+              <div className="payment-box">
+
+  <h3>Select Payment Method</h3>
+
+  <select
+    value={paymentMethod}
+    onChange={(e) =>
+      setPaymentMethod(
+        e.target.value
+      )
+    }
+  >
+
+    <option value="COD">
+      Cash On Delivery
+    </option>
+
+    <option value="UPI">
+      UPI
+    </option>
+
+    <option value="Card">
+      Debit/Credit Card
+    </option>
+
+  </select>
+<button
   className="checkout-btn"
   onClick={checkoutHandler}
 >
   Checkout
 </button>
+
+</div>
               </div>
 
             </>

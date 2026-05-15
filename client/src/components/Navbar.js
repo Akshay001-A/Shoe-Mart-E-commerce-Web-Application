@@ -7,6 +7,7 @@ function Navbar({
   setShowAdminProducts,
   setShowOrders,
   setShowManageShoes,
+  setShowMyOrders,
 
 }) {
 
@@ -24,123 +25,189 @@ function Navbar({
 
       <div className="nav-links">
 
-        <button
-          onClick={() => {
+  {/* HOME */}
 
-            setShowCart(false);
+  <button
+    onClick={() => {
 
-            setShowProfile(false);
+      setShowCart(false);
 
-            setShowAdminProducts(false);
+      setShowProfile(false);
 
-            setShowOrders(false);
+      setShowAdminProducts(false);
 
-            setShowManageShoes(false);
+      setShowOrders(false);
 
-          }}
-        >
-          Home
-        </button>
+      setShowManageShoes(false);
 
-        <button
-          onClick={() => {
+      setShowMyOrders(false);
 
-            setShowCart(true);
+    }}
+  >
+    Home
+  </button>
 
-            setShowProfile(false);
+  {/* CUSTOMER NAVBAR */}
 
-            setShowAdminProducts(false);
+  {!userInfo?.isAdmin && (
 
-            setShowOrders(false);
+    <>
 
-            setShowManageShoes(false);
+      <button
+        onClick={() => {
 
-          }}
-        >
-          Cart
-        </button>
+          setShowCart(true);
 
-        <button
-          onClick={() => {
+          setShowProfile(false);
 
-            setShowProfile(true);
+          setShowAdminProducts(false);
 
-            setShowCart(false);
+          setShowOrders(false);
 
-            setShowAdminProducts(false);
+          setShowManageShoes(false);
 
-            setShowOrders(false);
+          setShowMyOrders(false);
 
-            setShowManageShoes(false);
+        }}
+      >
+        Cart
+      </button>
 
-          }}
-        >
-          Profile
-        </button>
+      <button
+        onClick={() => {
 
-        {userInfo?.isAdmin && (
+          setShowMyOrders(true);
 
-          <>
+          setShowCart(false);
 
-            <button
-              onClick={() => {
+          setShowProfile(false);
 
-                setShowAdminProducts(true);
+          setShowAdminProducts(false);
 
-                setShowCart(false);
+          setShowManageShoes(false);
 
-                setShowProfile(false);
+          setShowOrders(false);
 
-                setShowOrders(false);
+        }}
+      >
+        My Orders
+      </button>
 
-                setShowManageShoes(false);
+      <button
+        onClick={() => {
 
-              }}
-            >
-              Add Shoes
-            </button>
+          setShowProfile(true);
 
-            <button
-              onClick={() => {
+          setShowCart(false);
 
-                setShowManageShoes(true);
+          setShowAdminProducts(false);
 
-                setShowCart(false);
+          setShowOrders(false);
 
-                setShowProfile(false);
+          setShowManageShoes(false);
 
-                setShowAdminProducts(false);
+          setShowMyOrders(false);
 
-                setShowOrders(false);
+        }}
+      >
+        Profile
+      </button>
 
-              }}
-            >
-              Manage Shoes
-            </button>
+    </>
 
-            <button
-              onClick={() => {
+  )}
 
-                setShowOrders(true);
+  {/* ADMIN NAVBAR */}
 
-                setShowCart(false);
+  {userInfo?.isAdmin && (
 
-                setShowProfile(false);
+    <>
 
-                setShowAdminProducts(false);
+      <button
+        onClick={() => {
 
-                setShowManageShoes(false);
+          setShowAdminProducts(true);
 
-              }}
-            >
-              Orders
-            </button>
+          setShowCart(false);
 
-          </>
+          setShowProfile(false);
 
-        )}
+          setShowOrders(false);
 
-      </div>
+          setShowManageShoes(false);
+
+          setShowMyOrders(false);
+
+        }}
+      >
+        Add Shoes
+      </button>
+
+      <button
+        onClick={() => {
+
+          setShowManageShoes(true);
+
+          setShowCart(false);
+
+          setShowProfile(false);
+
+          setShowAdminProducts(false);
+
+          setShowOrders(false);
+
+          setShowMyOrders(false);
+
+        }}
+      >
+        Manage Shoes
+      </button>
+
+      <button
+        onClick={() => {
+
+          setShowOrders(true);
+
+          setShowCart(false);
+
+          setShowProfile(false);
+
+          setShowAdminProducts(false);
+
+          setShowManageShoes(false);
+
+          setShowMyOrders(false);
+
+        }}
+      >
+        Orders
+      </button>
+
+      <button
+        onClick={() => {
+
+          setShowProfile(true);
+
+          setShowCart(false);
+
+          setShowAdminProducts(false);
+
+          setShowOrders(false);
+
+          setShowManageShoes(false);
+
+          setShowMyOrders(false);
+
+        }}
+      >
+        Profile
+      </button>
+
+    </>
+
+  )}
+
+</div>
 
     </nav>
 
