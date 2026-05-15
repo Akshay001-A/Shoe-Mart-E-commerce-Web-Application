@@ -51,3 +51,12 @@
 
   cursor: pointer;
 }
+
+.switch-text {
+
+  text-align: center;
+
+  color: blue;
+
+  cursor: pointer;
+}

@@ -3,38 +3,36 @@ import axios from "axios";
 
 import "./Login.css";
 
-function Login({ setShowRegister }) {
+function Register({ setShowRegister }) {
+
+  const [name, setName] = useState("");
 
   const [email, setEmail] = useState("");
 
   const [password, setPassword] = useState("");
 
-  const loginUser = async (e) => {
+  const registerUser = async (e) => {
 
     e.preventDefault();
 
     try {
 
-      const { data } = await axios.post(
-        "http://localhost:5000/api/auth/login",
+      await axios.post(
+        "http://localhost:5000/api/auth/register",
         {
+          name,
           email,
           password,
         }
       );
 
-      localStorage.setItem(
-        "userInfo",
-        JSON.stringify(data)
-      );
+      alert("Registration Successful");
 
-      alert("Login Successful");
-
-      window.location.reload();
+      setShowRegister(false);
 
     } catch (error) {
 
-      alert("Invalid Email or Password");
+      alert("User Already Exists");
 
     }
 
@@ -44,9 +42,20 @@ function Login({ setShowRegister }) {
 
     <div className="login-page">
 
-      <form className="login-form" onSubmit={loginUser}>
+      <form
+        className="login-form"
+        onSubmit={registerUser}
+      >
 
-        <h1>Login 🔐</h1>
+        <h1>Register 📝</h1>
+
+        <input
+          type="text"
+          placeholder="Enter Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
 
         <input
           type="email"
@@ -65,14 +74,14 @@ function Login({ setShowRegister }) {
         />
 
         <button type="submit">
-          Login
+          Register
         </button>
 
         <p
           className="switch-text"
-          onClick={() => setShowRegister(true)}
+          onClick={() => setShowRegister(false)}
         >
-          Create New Account
+          Already have an account? Login
         </p>
 
       </form>
@@ -81,4 +90,4 @@ function Login({ setShowRegister }) {
   );
 }
 
-export default Login;
+export default Register;

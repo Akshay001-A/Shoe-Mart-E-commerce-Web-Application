@@ -1,8 +1,11 @@
 import "./App.css";
 
-import { useState } from "react";
-import Login from "./components/Login";
+import { useState, useEffect } from "react";
 
+import axios from "axios";
+
+import Login from "./components/Login";
+import Register from "./components/Register";
 import Navbar from "./components/Navbar";
 import ProductCard from "./components/ProductCard";
 
@@ -13,39 +16,40 @@ function App() {
   const [search, setSearch] = useState("");
 
   const [showCart, setShowCart] = useState(false);
+
   const [showProfile, setShowProfile] = useState(false);
 
-  const products = [
+  const [showRegister, setShowRegister] =
+    useState(false);
 
-    {
-      id: 1,
-      name: "Nike Air Max",
-      brand: "Nike",
-      price: 5999,
-      image:
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
-    },
+  const [products, setProducts] = useState([]);
 
-    {
-      id: 2,
-      name: "Adidas Ultraboost",
-      brand: "Adidas",
-      price: 6999,
-      image:
-        "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519",
-    },
+  // FETCH PRODUCTS FROM BACKEND
+  useEffect(() => {
 
-    {
-      id: 3,
-      name: "Puma Running",
-      brand: "Puma",
-      price: 4999,
-      image:
-        "https://images.unsplash.com/photo-1608231387042-66d1773070a5",
-    },
+    const fetchProducts = async () => {
 
-  ];
+      try {
 
+        const { data } = await axios.get(
+          "http://localhost:5000/api/products"
+        );
+
+        setProducts(data);
+
+      } catch (error) {
+
+        console.log(error);
+
+      }
+
+    };
+
+    fetchProducts();
+
+  }, []);
+
+  // ADD TO CART
   const addToCart = (product) => {
 
     setCartItems([...cartItems, product]);
@@ -54,6 +58,7 @@ function App() {
 
   };
 
+  // REMOVE FROM CART
   const removeFromCart = (index) => {
 
     const updatedCart = cartItems.filter(
@@ -64,56 +69,93 @@ function App() {
 
   };
 
+  // SEARCH FILTER
   const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(search.toLowerCase())
+    product.name
+      .toLowerCase()
+      .includes(search.toLowerCase())
   );
 
-  const userInfo = localStorage.getItem("userInfo");
+  // GET USER FROM LOCAL STORAGE
+  const userInfo = JSON.parse(
+    localStorage.getItem("userInfo")
+  );
 
-if (!userInfo) {
-  return <Login />;
-}
+  // LOGIN / REGISTER FLOW
+  if (!userInfo) {
 
-return (
+    return (
+
+      showRegister ? (
+
+        <Register
+          setShowRegister={setShowRegister}
+        />
+
+      ) : (
+
+        <Login
+          setShowRegister={setShowRegister}
+        />
+
+      )
+
+    );
+
+  }
+
+  return (
 
     <div>
 
       <Navbar
-  setShowCart={setShowCart}
-  setShowProfile={setShowProfile}
-/>
+        setShowCart={setShowCart}
+        setShowProfile={setShowProfile}
+      />
+
+      {/* PROFILE PAGE */}
 
       {showProfile ? (
 
-  <div className="profile-page">
+        <div className="profile-page">
 
-    <h1>Profile 👤</h1>
+          <h1>Profile 👤</h1>
 
-    <div className="profile-card">
+          <div className="profile-card">
 
-      <h2>Akshay</h2>
+            <h2>
+              {userInfo.name}
+            </h2>
 
-      <p>Email: akshay@gmail.com</p>
+            <p>
+              Email: {userInfo.email}
+            </p>
 
-      <p>Role: Customer</p>
-<button
-  className="logout-btn"
-  onClick={() => {
+            <p>Role: Customer</p>
 
-    localStorage.removeItem("userInfo");
+            <button
+              className="logout-btn"
+              onClick={() => {
 
-    window.location.reload();
+                localStorage.removeItem(
+                  "userInfo"
+                );
 
-  }}
->
-  Logout
-</button>
+                window.location.reload();
 
-    </div>
+              }}
+            >
+              Logout
+            </button>
 
-  </div>
+          </div>
 
-) : showCart ? (
+        </div>
+
+      ) : showCart ? (
+
+        /* CART PAGE */
+
         <div className="cart-page">
 
           <h1>Cart Items 🛒</h1>
@@ -128,7 +170,10 @@ return (
 
               {cartItems.map((item, index) => (
 
-                <div key={index} className="cart-item">
+                <div
+                  key={index}
+                  className="cart-item"
+                >
 
                   <div className="cart-left">
 
@@ -156,7 +201,9 @@ return (
 
                     <button
                       className="remove-btn"
-                      onClick={() => removeFromCart(index)}
+                      onClick={() =>
+                        removeFromCart(index)
+                      }
                     >
                       Remove
                     </button>
@@ -173,7 +220,8 @@ return (
 
                   Total: ₹
                   {cartItems.reduce(
-                    (acc, item) => acc + item.price,
+                    (acc, item) =>
+                      acc + item.price,
                     0
                   )}
 
@@ -193,14 +241,19 @@ return (
 
       ) : (
 
+        /* HOME PAGE */
+
         <>
 
           <div className="home">
 
-            <h1>Welcome to Shoe Mart 👟</h1>
+            <h1>
+              Welcome to Shoe Mart 👟
+            </h1>
 
             <p>
-              Discover the best shoes with premium quality.
+              Discover the best shoes
+              with premium quality.
             </p>
 
             <input
@@ -208,7 +261,9 @@ return (
               placeholder="Search shoes..."
               className="search-bar"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) =>
+                setSearch(e.target.value)
+              }
             />
 
           </div>
@@ -218,12 +273,14 @@ return (
             {filteredProducts.map((product) => (
 
               <ProductCard
-                key={product.id}
+                key={product._id}
                 name={product.name}
                 brand={product.brand}
                 price={product.price}
                 image={product.image}
-                addToCart={() => addToCart(product)}
+                addToCart={() =>
+                  addToCart(product)
+                }
               />
 
             ))}
@@ -235,10 +292,9 @@ return (
       )}
 
     </div>
+
   );
 
 }
-
-
 
 export default App;

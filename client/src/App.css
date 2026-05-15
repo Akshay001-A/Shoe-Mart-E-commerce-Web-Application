@@ -23,15 +23,16 @@ body {
 
 .products-container {
 
-  display: flex;
+  display: grid;
 
-  justify-content: center;
+  grid-template-columns: repeat(4, 1fr);
 
   gap: 30px;
 
-  margin-top: 50px;
+  padding: 40px;
 
-  flex-wrap: wrap;
+  justify-items: center;
+
 }
 
 .cart-page {
