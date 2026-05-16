@@ -590,30 +590,36 @@ setTimeout(() => {
   // SEARCH FILTER
 const [search, setSearch] =
   useState("");
+const [aiResults, setAiResults] =
+  useState([]);
 
 const filteredProducts =
-  products.filter((product) =>
 
-    product.name
-      .toLowerCase()
-      .includes(
-        search.toLowerCase()
-      ) ||
+  aiResults.length > 0
 
-    product.brand
-      .toLowerCase()
-      .includes(
-        search.toLowerCase()
-      ) ||
+    ? aiResults
 
-    product.category
-      .toLowerCase()
-      .includes(
-        search.toLowerCase()
-      )
+    : products.filter((product) =>
 
-  );
+        product.name
+          .toLowerCase()
+          .includes(
+            search.toLowerCase()
+          ) ||
 
+        product.brand
+          .toLowerCase()
+          .includes(
+            search.toLowerCase()
+          ) ||
+
+        product.category
+          .toLowerCase()
+          .includes(
+            search.toLowerCase()
+          )
+
+      );
   // USER INFO
 
   const userInfo = JSON.parse(
@@ -777,16 +783,27 @@ return (
     <div>
 
       {/* NAVBAR */}
+<Navbar
 
-      <Navbar
+  setActivePage={setActivePage}
 
-        setActivePage={setActivePage}
+  search={search}
 
-        search={search}
+  setSearch={setSearch}
 
-        setSearch={setSearch}
+  setAiResults={setAiResults}
 
-      />
+  aiResults={aiResults}
+
+  products={products}
+
+  setTopMessage={setTopMessage}
+
+  setShowTopMessage={
+    setShowTopMessage
+  }
+
+/>
 
       {/* PAGE RENDER */}
 
@@ -918,7 +935,8 @@ activePage === "myorders" ? (
 
            {
 
-  search.trim() === "" && (
+  search.trim() === "" &&
+aiResults.length === 0 &&  (
 
     <Banner
 

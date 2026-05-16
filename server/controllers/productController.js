@@ -1,7 +1,70 @@
 const Product = require("../models/Product");
 
+const axios = require("axios");
+
+const fs = require("fs");
+
+const FormData = require("form-data");
+
+
+// IMAGE SEARCH PRODUCTS
+
+const imageSearchProducts = async (
+  req,
+  res
+) => {
+
+  try {
+
+    const formData =
+      new FormData();
+
+    formData.append(
+
+      "image",
+
+      fs.createReadStream(
+        req.file.path
+      )
+
+    );
+
+    const response =
+      await axios.post(
+
+        "http://127.0.0.1:8000/search-image",
+
+        formData,
+
+        {
+
+          headers:
+            formData.getHeaders(),
+
+        }
+
+      );
+
+    res.json(response.data);
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+
+      message:
+        "Image Search Failed",
+
+    });
+
+  }
+
+};
+
 
 // CREATE PRODUCT
+
 const createProduct = async (req, res) => {
 
     try {
@@ -22,6 +85,7 @@ const createProduct = async (req, res) => {
 
 
 // GET ALL PRODUCTS + SEARCH + FILTER
+
 const getProducts = async (req, res) => {
 
     try {
@@ -67,6 +131,7 @@ const getProducts = async (req, res) => {
 
 
 // GET SINGLE PRODUCT
+
 const getProductById = async (req, res) => {
 
     try {
@@ -95,6 +160,7 @@ const getProductById = async (req, res) => {
 
 
 // UPDATE PRODUCT
+
 const updateProduct = async (req, res) => {
 
     try {
@@ -135,6 +201,7 @@ const updateProduct = async (req, res) => {
 
 
 // DELETE PRODUCT
+
 const deleteProduct = async (req, res) => {
 
     try {
@@ -166,12 +233,14 @@ const deleteProduct = async (req, res) => {
 };
 
 
-
-
 module.exports = {
+
+    imageSearchProducts,
+
     createProduct,
     getProducts,
     getProductById,
     updateProduct,
     deleteProduct,
+
 };
