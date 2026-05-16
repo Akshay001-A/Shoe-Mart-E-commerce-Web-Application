@@ -2,13 +2,19 @@ import "./Cart.css";
 
 import { useState } from "react";
 
+import axios from "axios";
+
 function Cart({
+
   cartItems,
+  setCartItems,
   updateQuantity,
   removeFromCart,
   paymentMethod,
   setPaymentMethod,
-  checkoutHandler,
+  fetchProducts,
+  fetchMyOrders,
+
 }) {
 
   // TOP MESSAGE
@@ -19,6 +25,28 @@ function Cart({
   const [showMessage, setShowMessage] =
     useState(false);
 
+  // PAYMENT POPUP
+
+  const [showPaymentPopup,
+    setShowPaymentPopup] =
+    useState(false);
+
+  // SHOW MESSAGE FUNCTION
+
+  const showTopMessage = (text) => {
+
+    setMessage(text);
+
+    setShowMessage(true);
+
+    setTimeout(() => {
+
+      setShowMessage(false);
+
+    }, 2500);
+
+  };
+
   // HANDLE QUANTITY
 
   const handleQuantity = (
@@ -27,31 +55,21 @@ function Cart({
     itemName
   ) => {
 
-    if (
-      action === "increase"
-    ) {
+    updateQuantity(id, action);
 
-      setMessage(
+    if (action === "increase") {
+
+      showTopMessage(
         `${itemName} Quantity Updated ✅`
       );
 
     } else {
 
-      setMessage(
+      showTopMessage(
         `${itemName} Quantity Reduced`
       );
 
     }
-
-    setShowMessage(true);
-
-    setTimeout(() => {
-
-      setShowMessage(false);
-
-    }, 2000);
-
-    updateQuantity(id, action);
 
   };
 
@@ -62,39 +80,171 @@ function Cart({
     itemName
   ) => {
 
-    setMessage(
+    removeFromCart(index);
+
+    showTopMessage(
       `${itemName} Removed From Cart ❌`
     );
 
-    setShowMessage(true);
+  };
 
-    setTimeout(() => {
+  // CHECK STOCK
 
-      setShowMessage(false);
+  const checkoutHandler = async () => {
 
-    }, 2000);
+    try {
 
-    removeFromCart(index);
+      const { data } = await axios.get(
+        "http://localhost:5000/api/products"
+      );
+
+      for (const cartItem of cartItems) {
+
+        const latestProduct = data.find(
+          (product) =>
+            product._id === cartItem._id
+        );
+
+        if (
+          !latestProduct ||
+          latestProduct.countInStock <= 0 ||
+          latestProduct.countInStock <
+            cartItem.quantity
+        ) {
+
+          showTopMessage(
+            `${cartItem.name} Out Of Stock`
+          );
+
+          return;
+
+        }
+
+      }
+
+      // OPEN PAYMENT POPUP
+
+      setShowPaymentPopup(true);
+
+    } catch (error) {
+
+      showTopMessage(
+        "Stock Check Failed ❌"
+      );
+
+    }
 
   };
 
-  // CHECKOUT
+  // PLACE ORDER
 
-  const handleCheckout = () => {
+  const placeOrderHandler = async () => {
 
-    setMessage(
-      "Order Placed Successfully 🎉"
-    );
+    try {
 
-    setShowMessage(true);
+      const userInfo = JSON.parse(
+        localStorage.getItem("userInfo")
+      );
 
-    setTimeout(() => {
+      const orderData = {
 
-      setShowMessage(false);
+        user: userInfo._id,
 
-    }, 2500);
+        orderItems: cartItems.map(
+          (item) => ({
 
-    checkoutHandler();
+            name: item.name,
+
+            quantity: item.quantity,
+
+            image: item.image,
+
+            price: item.price,
+
+            product: item._id,
+
+          })
+        ),
+
+        totalPrice: cartItems.reduce(
+          (acc, item) =>
+            acc + item.price * item.quantity,
+          0
+        ),
+
+        shippingAddress: {
+
+          address:
+            userInfo.address ||
+            "Bangalore",
+
+          city: "Bangalore",
+
+          postalCode: "560001",
+
+          country: "India",
+
+        },
+
+      };
+
+      await axios.post(
+
+        "http://localhost:5000/api/orders",
+
+        {
+
+          ...orderData,
+
+          paymentMethod,
+
+          isPaid:
+            paymentMethod !== "COD",
+
+        },
+
+        {
+
+          headers: {
+
+            Authorization:
+              `Bearer ${userInfo.token}`,
+
+          },
+
+        }
+
+      );
+
+      showTopMessage(
+
+        paymentMethod === "COD"
+
+          ? "Order Placed Successfully ✅"
+
+          : "Payment Successful ✅"
+
+      );
+
+      setShowPaymentPopup(false);
+
+      setCartItems([]);
+
+      fetchProducts();
+
+      fetchMyOrders();
+
+    } catch (error) {
+
+      showTopMessage(
+
+        error.response?.data?.message ||
+
+        "Order Failed ❌"
+
+      );
+
+    }
 
   };
 
@@ -223,11 +373,14 @@ function Cart({
 
           ))}
 
+          {/* CHECKOUT */}
+
           <div className="checkout-section">
 
             <h2 className="total-price">
 
               Total: ₹
+
               {cartItems.reduce(
                 (acc, item) =>
                   acc +
@@ -257,28 +410,22 @@ function Cart({
               >
 
                 <option value="COD">
-
                   Cash On Delivery
-
                 </option>
 
                 <option value="UPI">
-
                   UPI
-
                 </option>
 
                 <option value="Card">
-
                   Debit/Credit Card
-
                 </option>
 
               </select>
 
               <button
                 className="checkout-btn"
-                onClick={handleCheckout}
+                onClick={checkoutHandler}
               >
 
                 Checkout
@@ -292,6 +439,103 @@ function Cart({
         </>
 
       )}
+
+      {/* PAYMENT POPUP */}
+
+      {
+
+        showPaymentPopup && (
+
+          <div className="payment-popup-overlay">
+
+           <div className="payment-popup">
+
+  <h2 className="popup-title">
+
+    Confirm Your Order 🛍️
+
+  </h2>
+
+  <p className="popup-method">
+
+    Payment Method:
+
+    <span>
+      {paymentMethod}
+    </span>
+
+  </p>
+
+  <h3 className="popup-total">
+
+    Total: ₹
+
+    {cartItems.reduce(
+
+      (acc, item) =>
+
+        acc +
+        item.price *
+        item.quantity,
+
+      0
+
+    )}
+
+  </h3>
+
+  {
+
+    paymentMethod !== "COD" && (
+
+      <div className="fake-payment-box">
+
+        <input
+          type="text"
+          placeholder="Enter UPI ID / Card Number"
+        />
+
+        <input
+          type="password"
+          placeholder="Enter PIN / Password"
+        />
+
+      </div>
+
+    )
+
+  }
+
+  <div className="payment-buttons">
+
+    <button
+      className="pay-btn"
+      onClick={placeOrderHandler}
+    >
+
+      Confirm Order
+
+    </button>
+
+    <button
+      className="cancel-btn"
+      onClick={() =>
+        setShowPaymentPopup(false)
+      }
+    >
+
+      Cancel
+
+    </button>
+
+  </div>
+
+</div>
+          </div>
+
+        )
+
+      }
 
     </div>
 

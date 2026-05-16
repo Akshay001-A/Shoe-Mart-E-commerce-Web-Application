@@ -1,6 +1,7 @@
 import "./ProductCard.css";
 
 function ProductCard({
+
   name,
   brand,
   category,
@@ -9,11 +10,17 @@ function ProductCard({
   image,
   countInStock,
   addToCart,
+
 }) {
 
   // GET USER INFO
+
   const userInfo = JSON.parse(
-    localStorage.getItem("userInfo")
+
+    localStorage.getItem(
+      "userInfo"
+    )
+
   );
 
   return (
@@ -40,17 +47,43 @@ function ProductCard({
 
       <h1>₹{price}</h1>
 
-      {/* SHOW STOCK ONLY FOR ADMIN */}
+      {/* STOCK */}
 
-      {userInfo?.isAdmin && (
-        <p className="stock">
-          Stock: {countInStock}
-        </p>
+      <p className="stock">
+
+        Stock: {countInStock}
+
+      </p>
+
+      {/* CUSTOMER ONLY */}
+
+      {!userInfo?.isAdmin && (
+
+        countInStock > 0 ? (
+
+          <button
+            onClick={addToCart}
+            className="add-cart-btn"
+          >
+
+            Add to Cart
+
+          </button>
+
+        ) : (
+
+          <button
+            className="out-stock-btn"
+            disabled
+          >
+
+            Out Of Stock
+
+          </button>
+
+        )
+
       )}
-
-      <button onClick={addToCart}>
-        Add to Cart
-      </button>
 
     </div>
 

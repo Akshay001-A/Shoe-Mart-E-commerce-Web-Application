@@ -47,6 +47,13 @@ const [myOrders,
 setMyOrders] =
 useState([]);
 
+const [topMessage, setTopMessage] =
+  useState("");
+
+const [showTopMessage,
+  setShowTopMessage] =
+  useState(false);
+
 
 const [currentSlide, setCurrentSlide] =
   useState(0);
@@ -104,9 +111,7 @@ const [editImage, setEditImage] =
 const [editStock, setEditStock] =
   useState("");
 
-const [showPaymentPopup,
-setShowPaymentPopup] =
-useState(false);
+
 
 const [paymentMethod,
 setPaymentMethod] =
@@ -183,157 +188,7 @@ const fetchMyOrders = async () => {
   }
 
 };
-const checkoutHandler = async () => {
 
-  try {
-
-    const { data } = await axios.get(
-      "http://localhost:5000/api/products"
-    );
-
-    for (const cartItem of cartItems) {
-
-      const latestProduct = data.find(
-        (product) =>
-          product._id === cartItem._id
-      );
-
-      if (
-        !latestProduct ||
-        latestProduct.countInStock <= 0 ||
-        latestProduct.countInStock <
-          cartItem.quantity
-      ) {
-
-        alert(
-          cartItem.name +
-          " Out Of Stock"
-        );
-
-        return;
-      }
-
-    }
-
-    // ONLY OPEN POPUP IF STOCK EXISTS
-
-    setShowPaymentPopup(true);
-
-  } catch (error) {
-
-    alert("Stock Check Failed");
-
-  }
-
-};
-
-const placeOrderHandler = async () => {
-
-  try {
-
-    const userInfo = JSON.parse(
-      localStorage.getItem("userInfo")
-    );
-
-    const orderData = {
-
-      user: userInfo._id,
-
-      orderItems: cartItems.map((item) => ({
-
-        name: item.name,
-
-        quantity: item.quantity,
-
-        image: item.image,
-
-        price: item.price,
-
-        product: item._id,
-
-      })),
-
-      totalPrice: cartItems.reduce(
-        (acc, item) =>
-          acc + item.price * item.quantity,
-        0
-      ),
-
-      shippingAddress: {
-
-        address: "Bangalore",
-
-        city: "Bangalore",
-
-        postalCode: "560001",
-
-        country: "India",
-
-      },
-
-    };
-
-    await axios.post(
-
-      "http://localhost:5000/api/orders",
-
-      {
-
-        ...orderData,
-
-        paymentMethod,
-
-        isPaid:
-          paymentMethod !== "COD",
-
-      },
-
-      {
-
-        headers: {
-
-          Authorization:
-            `Bearer ${userInfo.token}`,
-
-        },
-
-      }
-
-    );
-
-    alert(
-
-      paymentMethod === "ONLINE"
-
-        ? "Payment Successful ✅"
-
-        : "Order Placed Successfully ✅"
-
-    );
-
-    setShowPaymentPopup(false);
-
-    setCartItems([]);
-
-    fetchProducts();
-
-    fetchMyOrders();
-
-  } catch (error) {
-
-  
-
-  alert(
-
-    error.response?.data?.message ||
-
-    "Order Failed"
-
-  );
-
-}
-
-};
 
   // FETCH PRODUCTS
 const fetchProducts = async () => {
@@ -357,7 +212,9 @@ const fetchProducts = async () => {
 
   // ADD TO CART
 
-  const addToCart = (product) => {
+// ADD TO CART
+
+const addToCart = (product) => {
 
   const existItem = cartItems.find(
     (x) => x._id === product._id
@@ -373,6 +230,7 @@ const fetchProducts = async () => {
 
           ? {
               ...x,
+
               quantity:
                 x.quantity + 1 <=
                 x.countInStock
@@ -382,22 +240,42 @@ const fetchProducts = async () => {
 
           : x
       )
+
     );
 
   } else {
 
     setCartItems([
+
       ...cartItems,
+
       {
         ...product,
         quantity: 1,
       },
+
     ]);
 
   }
-  alert(product.name + " added to cart");
+
+  // TOP SUCCESS MESSAGE
+
+  setTopMessage(
+    `${product.name} Added To Cart 🛒`
+  );
+
+  setShowTopMessage(true);
+
+  setTimeout(() => {
+
+    setShowTopMessage(false);
+
+  }, 2000);
 
 };
+
+
+// UPDATE QUANTITY
 
 const updateQuantity = (
 
@@ -412,29 +290,45 @@ const updateQuantity = (
 
       if (item._id === id) {
 
+        // INCREASE
+
         if (
+
           action === "increase" &&
+
           item.quantity <
             item.countInStock
+
         ) {
 
           return {
+
             ...item,
+
             quantity:
               item.quantity + 1,
+
           };
 
         }
 
+        // DECREASE
+
         if (
+
           action === "decrease" &&
+
           item.quantity > 1
+
         ) {
 
           return {
+
             ...item,
+
             quantity:
               item.quantity - 1,
+
           };
 
         }
@@ -444,7 +338,7 @@ const updateQuantity = (
       return item;
 
     })
-    
+
   );
 
 };
@@ -828,89 +722,27 @@ useEffect(() => {
 );
 return (
 
+
+  
+
   <>
 
-    {editPopup}
+  {
 
-    {showPaymentPopup && (
+  showTopMessage && (
 
-  <div className="payment-popup-overlay">
+    <div className="top-message">
 
-    <div className="payment-popup">
-
-      <h2>
-        Confirm Payment
-      </h2>
-
-      <p>
-
-        Payment Method:
-        <strong>
-          {paymentMethod}
-        </strong>
-
-      </p>
-
-      <h3>
-
-        Total: ₹
-        {cartItems.reduce(
-
-          (acc, item) =>
-
-            acc +
-            item.price *
-            item.quantity,
-
-          0
-
-        )}
-
-      </h3>
-
-      {paymentMethod !== "COD" && (
-
-        <div className="fake-payment-box">
-
-          <input
-            type="text"
-            placeholder="Card / UPI ID"
-          />
-
-          <input
-            type="password"
-            placeholder="Password / PIN"
-          />
-
-        </div>
-
-      )}
-
-      <div className="payment-buttons">
-
-        <button
-          className="pay-btn"
-          onClick={placeOrderHandler}
-        >
-          Pay Now
-        </button>
-
-        <button
-          className="cancel-btn"
-          onClick={() =>
-            setShowPaymentPopup(false)
-          }
-        >
-          Cancel
-        </button>
-
-      </div>
+      {topMessage}
 
     </div>
 
-  </div>
+  )
 
-)}
+}
+
+    {editPopup}
+
 
     <div>
 
@@ -1331,13 +1163,15 @@ return (
        showCart ? (
      //car page in customer 
   <Cart
-    cartItems={cartItems}
-    updateQuantity={updateQuantity}
-    removeFromCart={removeFromCart}
-    paymentMethod={paymentMethod}
-    setPaymentMethod={setPaymentMethod}
-    checkoutHandler={checkoutHandler}
-  />
+  cartItems={cartItems}
+  setCartItems={setCartItems}
+  updateQuantity={updateQuantity}
+  removeFromCart={removeFromCart}
+  paymentMethod={paymentMethod}
+  setPaymentMethod={setPaymentMethod}
+  fetchProducts={fetchProducts}
+  fetchMyOrders={fetchMyOrders}
+/>
 
 ) :  (
         <>
