@@ -107,7 +107,7 @@ Modern product browsing interface with responsive shoe cards.
 
 Professional admin product management interface.
 
-<img src="https://raw.githubusercontent.com/Akshay001-A/Shoe-Mart/main/screenshots/admin.png" width="100%"/>
+<img src="https://raw.githubusercontent.com/Akshay001-A/Shoe-Mart-E-commerce-Web-Application/main/screenshots/admin.png" width="100%"/>
 
 ---
 
@@ -115,7 +115,7 @@ Professional admin product management interface.
 
 Admin order management and tracking section.
 
-<img src="https://raw.githubusercontent.com/Akshay001-A/Shoe-Mart/main/screenshots/orders.png" width="100%"/>
+<img src="https://raw.githubusercontent.com/Akshay001-A/Shoe-Mart-E-commerce-Web-Application/main/screenshots/orders.png" width="100%"/>
 
 ---
 
@@ -123,7 +123,7 @@ Admin order management and tracking section.
 
 Customer profile management system.
 
-<img src="https://raw.githubusercontent.com/Akshay001-A/Shoe-Mart/main/screenshots/profile.png" width="100%"/>
+<img src="https://raw.githubusercontent.com/Akshay001-A/Shoe-Mart-E-commerce-Web-Application/main/screenshots/profile.png" width="100%"/>
 
 ---
 
