@@ -99,7 +99,7 @@ This project demonstrates a complete production-style eCommerce workflow using t
 
 Modern product browsing interface with responsive shoe cards.
 
-<img src="https://raw.githubusercontent.com/Akshay001-A/Shoe-Mart/main/screenshots/home.png" width="100%"/>
+<img src="https://raw.githubusercontent.com/Akshay001-A/Shoe-Mart-E-commerce-Web-Application/main/screenshots/home.png" width="100%"/>
 
 ---
 
