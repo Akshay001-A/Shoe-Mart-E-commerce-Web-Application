@@ -14,6 +14,7 @@ import ProductCard from "./components/ProductCard";
 import Cart from "./components/Cart";
 import Profile from "./components/Profile";
 import AddShoes from "./components/AddShoes";
+import ManageShoes from "./components/ManageShoes";
 
 function App() {
 
@@ -430,13 +431,35 @@ const updateProduct = async () => {
 
     setEditingProduct(null);
 
-    alert("Product Updated");
+    // TOP MESSAGE
+
+    setTopMessage(
+      "Product Updated Successfully ✅"
+    );
+
+    setShowTopMessage(true);
+
+    setTimeout(() => {
+
+      setShowTopMessage(false);
+
+    }, 2000);
 
   } catch (error) {
 
     console.log(error);
 
-    alert("Update Failed");
+    setTopMessage(
+      "Update Failed ❌"
+    );
+
+    setShowTopMessage(true);
+
+    setTimeout(() => {
+
+      setShowTopMessage(false);
+
+    }, 2000);
 
   }
 
@@ -727,7 +750,7 @@ return (
 
     {/* EDIT POPUP */}
 
-    {editPopup}
+    
 
     <div>
 
@@ -776,72 +799,46 @@ return (
 
           />
 
-        ) : activePage === "manage" ? (
+        ) :activePage === "manage" ? (
 
-          <div className="admin-page">
+  <ManageShoes
 
-            <h1>
-              Manage Shoes 👟
-            </h1>
+  products={products}
 
-            <div className="manage-products-grid">
+  openEditForm={openEditForm}
 
-              {products.map((product) => (
+  deleteProduct={deleteProduct}
 
-                <div
-                  key={product._id}
-                  className="manage-product-card"
-                >
+  editingProduct={editingProduct}
 
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                  />
+  editName={editName}
+  setEditName={setEditName}
 
-                  <h2>{product.name}</h2>
+  editBrand={editBrand}
+  setEditBrand={setEditBrand}
 
-                  <p>{product.brand}</p>
+  editCategory={editCategory}
+  setEditCategory={setEditCategory}
 
-                  <p>{product.category}</p>
+  editDescription={editDescription}
+  setEditDescription={setEditDescription}
 
-                  <p>₹{product.price}</p>
+  editPrice={editPrice}
+  setEditPrice={setEditPrice}
 
-                  <p>
-                    Stock:
-                    {product.countInStock}
-                  </p>
+  editImage={editImage}
+  setEditImage={setEditImage}
 
-                  <div className="manage-buttons">
+  editStock={editStock}
+  setEditStock={setEditStock}
 
-                    <button
-                      className="edit-btn"
-                      onClick={() =>
-                        openEditForm(product)
-                      }
-                    >
-                      Edit
-                    </button>
+  updateProduct={updateProduct}
 
-                    <button
-                      className="delete-btn"
-                      onClick={() =>
-                        deleteProduct(product._id)
-                      }
-                    >
-                      Delete
-                    </button>
+  setEditingProduct={setEditingProduct}
 
-                  </div>
+/>
 
-                </div>
-
-              ))}
-
-            </div>
-
-          </div>
-
-        ) : activePage === "orders" ? (
+): activePage === "orders" ? (
 
           <div className="admin-page">
 
