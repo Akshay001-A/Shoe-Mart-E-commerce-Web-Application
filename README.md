@@ -309,11 +309,6 @@ npm start
   </a>
 </p>
 
----
-
-## 🤝 Contributors
-
-### Charan Kumar R
 
 </div>
 
