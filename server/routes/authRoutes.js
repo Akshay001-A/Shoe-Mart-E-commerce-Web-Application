@@ -4,26 +4,59 @@ const router = express.Router();
 
 const User = require("../models/User");
 
-const { protect } = require("../middleware/authMiddleware");
+const {
+  protect,
+} = require("../middleware/authMiddleware");
 
 const {
+
   registerUser,
   loginUser,
   getUserProfile,
+  updateUserProfile,
+
 } = require("../controllers/authController");
 
-router.post("/register", registerUser);
 
-router.post("/login", loginUser);
+// REGISTER
+router.post(
+  "/register",
+  registerUser
+);
 
-router.get("/profile", protect, getUserProfile);
 
+// LOGIN
+router.post(
+  "/login",
+  loginUser
+);
+
+
+// GET PROFILE
+router.get(
+  "/profile",
+  protect,
+  getUserProfile
+);
+
+
+// UPDATE PROFILE
+router.put(
+  "/profile",
+  protect,
+  updateUserProfile
+);
+
+
+// MAKE ADMIN
 router.put("/admin", async (req, res) => {
 
   try {
 
     const user = await User.findOne({
+
       email: req.body.email,
+
     });
 
     if (user) {
@@ -33,13 +66,18 @@ router.put("/admin", async (req, res) => {
       await user.save();
 
       res.json({
-        message: "Admin Added Successfully",
+
+        message:
+          "Admin Added Successfully",
+
       });
 
     } else {
 
       res.status(404).json({
+
         message: "User Not Found",
+
       });
 
     }
@@ -47,7 +85,9 @@ router.put("/admin", async (req, res) => {
   } catch (error) {
 
     res.status(500).json({
+
       message: error.message,
+
     });
 
   }

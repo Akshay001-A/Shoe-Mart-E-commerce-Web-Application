@@ -23,6 +23,11 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+
+    address: {
+      type: String,
+      default: "",
+    },
   },
 
   {
@@ -30,5 +35,5 @@ const userSchema = mongoose.Schema(
   }
 );
 
-
-module.exports = mongoose.model("User", userSchema);
+module.exports =
+mongoose.model("User", userSchema);

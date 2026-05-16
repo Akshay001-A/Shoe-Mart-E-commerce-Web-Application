@@ -1,5 +1,7 @@
 import "./App.css";
 
+
+
 import { useState, useEffect } from "react";
 
 import axios from "axios";
@@ -7,7 +9,10 @@ import axios from "axios";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Navbar from "./components/Navbar";
+import Banner from "./components/Banner";
 import ProductCard from "./components/ProductCard";
+import Cart from "./components/Cart";
+import Profile from "./components/Profile";
 
 function App() {
 
@@ -690,7 +695,8 @@ const filteredProducts =
   const userInfo = JSON.parse(
     localStorage.getItem("userInfo")
   );
-  useEffect(() => {
+  // eslint-disable-next-line
+useEffect(() => {
 
   fetchProducts();
 
@@ -706,7 +712,7 @@ const filteredProducts =
 
   }
 
-}, [userInfo]);
+}, []);
 
   // LOGIN / REGISTER FLOW
 
@@ -1253,10 +1259,9 @@ return (
                 ₹{order.totalPrice}
               </p>
 
-              <p>
-                Status:
-                {order.orderStatus}
-              </p>
+             <p className="order-status">
+  {order.orderStatus}
+</p>
 
             </div>
 
@@ -1279,7 +1284,8 @@ return (
                         alt={item.name}
                       />
 
-                      <div>
+                      <div className="order-item-details">
+
 
                         <h4>
                           {item.name}
@@ -1315,300 +1321,35 @@ return (
 
   </div>
 
-      ) : showProfile ? (
+      ) :showProfile ? (
 
-        /* PROFILE PAGE */
+  <Profile
+    userInfo={userInfo}
+  />
 
-        <div className="profile-page">
+) :
+       showCart ? (
+     //car page in customer 
+  <Cart
+    cartItems={cartItems}
+    updateQuantity={updateQuantity}
+    removeFromCart={removeFromCart}
+    paymentMethod={paymentMethod}
+    setPaymentMethod={setPaymentMethod}
+    checkoutHandler={checkoutHandler}
+  />
 
-          <h1>Profile 👤</h1>
-
-          <div className="profile-card">
-
-            <h2>
-              {userInfo.name}
-            </h2>
-
-            <p>
-              Email:
-              {userInfo.email}
-            </p>
-
-            <p>
-
-              Role:
-              {userInfo.isAdmin
-                ? " Admin"
-                : " Customer"}
-
-            </p>
-
-            <button
-              className="logout-btn"
-              onClick={() => {
-
-                localStorage.removeItem(
-                  "userInfo"
-                );
-
-                window.location.reload();
-
-              }}
-            >
-              Logout
-            </button>
-
-          </div>
-
-        </div>
-
-      ) : showCart ? (
-
-        /* CART PAGE */
-
-        <div className="cart-page">
-
-          <h1>Cart Items 🛒</h1>
-
-          {cartItems.length === 0 ? (
-
-            <p>No items in cart</p>
-
-          ) : (
-
-            <>
-
-              {cartItems.map(
-                (item, index) => (
-
-                  <div
-                    key={index}
-                    className="cart-item"
-                  >
-
-                    <div className="cart-left">
-
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="cart-image"
-                      />
-
-                      <div className="cart-details">
-
-                        <h3>{item.name}</h3>
-
-                        <p>{item.brand}</p>
-
-                      </div>
-
-                    </div>
-
-                    <div>
-<div className="cart-price">
-
-  ₹{item.price}
-
-  <div className="qty-controls">
-
-    <button
-      onClick={() =>
-        updateQuantity(
-          item._id,
-          "decrease"
-        )
-      }
-    >
-      -
-    </button>
-
-    <span>
-      {item.quantity}
-    </span>
-
-    <button
-      onClick={() =>
-        updateQuantity(
-          item._id,
-          "increase"
-        )
-      }
-    >
-      +
-    </button>
-
-  </div>
-
-</div>
-
-                      <button
-                        className="remove-btn"
-                        onClick={() =>
-                          removeFromCart(index)
-                        }
-                      >
-                        Remove
-                      </button>
-
-                    </div>
-
-                  </div>
-
-                )
-              )}
-
-              <div className="total-section">
-
-                <h2>
-
-                  Total: ₹
-                  {cartItems.reduce(
-                    (acc, item) =>
-                      acc + item.price * item.quantity,
-                    0
-                  )}
-
-                </h2>
-
-              <div className="payment-box">
-
-  <h3>Select Payment Method</h3>
-
-  <select
-    value={paymentMethod}
-    onChange={(e) =>
-      setPaymentMethod(
-        e.target.value
-      )
-    }
-  >
-
-    <option value="COD">
-      Cash On Delivery
-    </option>
-
-    <option value="UPI">
-      UPI
-    </option>
-
-    <option value="Card">
-      Debit/Credit Card
-    </option>
-
-  </select>
-<button
-  className="checkout-btn"
-  onClick={checkoutHandler}
->
-  Checkout
-</button>
-
-</div>
-              </div>
-
-            </>
-
-          )}
-
-        </div>
-
-            ) : (
+) :  (
         <>
-          {/* HOME PAGE */}
+          {/* HOME PAGE  Banner  */}
+      
+          <Banner
+  currentSlide={currentSlide}
+  nextSlide={nextSlide}
+  prevSlide={prevSlide}
+/>
 
-          {/* SLIDER */}
-          <div className="banner-slider">
 
-  {/* LEFT BUTTON */}
-  <button
-    className="slider-btn left-btn"
-    onClick={prevSlide}
-  >
-    ❮
-  </button>
-
-  {/* TRACK */}
-  <div
-    className="slides-track"
-    style={{
-      transform: `translateX(-${currentSlide * 100}%)`
-    }}
-  >
-
-    {/* SLIDE 1 */}
-    <div className="slide-card nike-slide">
-
-      <div className="slide-content">
-        <h1>Nike Air Max</h1>
-
-        <p>
-          Feel the speed and comfort
-        </p>
-
-        <button>
-          Shop Now
-        </button>
-      </div>
-
-      <img
-        src="https://images.unsplash.com/photo-1542291026-7eec264c27ff"
-        alt="Nike"
-      />
-    </div>
-
-    {/* SLIDE 2 */}
-    <div className="slide-card adidas-slide">
-
-      <div className="slide-content">
-        <h1>Adidas Ultraboost</h1>
-
-        <p>
-          Premium running collection
-        </p>
-
-        <button>
-          Explore
-        </button>
-      </div>
-
-      <img
-        src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77"
-        alt="Adidas"
-      />
-    </div>
-
-    {/* SLIDE 3 */}
-    <div className="slide-card puma-slide">
-
-      <div className="slide-content">
-        <h1>Puma Sports</h1>
-
-        <p>
-          Stylish everyday wear
-        </p>
-
-        <button>
-          Buy Now
-        </button>
-      </div>
-
-      <img
-        src="https://images.unsplash.com/photo-1549298916-b41d501d3772"
-        alt="Puma"
-      />
-    </div>
-
-  </div>
-
-  {/* RIGHT BUTTON */}
-  <button
-    className="slider-btn right-btn"
-    onClick={nextSlide}
-  >
-    ❯
-  </button>
-
-</div>
 
           {/* PRODUCTS */}
           <div className="products-container">
