@@ -99,31 +99,7 @@ This project demonstrates a complete production-style eCommerce workflow using t
 
 Modern product browsing interface with responsive shoe cards.
 
-<img src="YOUR_HOME_PAGE_IMAGE_LINK" width="100%"/>
-
----
-
-## 👟 Product Collection
-
-Interactive product cards with smooth hover effects.
-
-<img src="YOUR_PRODUCTS_IMAGE_LINK" width="100%"/>
-
----
-
-## 🛒 Shopping Cart
-
-Advanced cart management with quantity controls.
-
-<img src="YOUR_CART_IMAGE_LINK" width="100%"/>
-
----
-
-## 👤 Profile Page
-
-Customer profile management system.
-
-<img src="YOUR_PROFILE_IMAGE_LINK" width="100%"/>
+<img src="https://raw.githubusercontent.com/Akshay001-A/Shoe-Mart/main/screenshots/home.png" width="100%"/>
 
 ---
 
@@ -131,7 +107,7 @@ Customer profile management system.
 
 Professional admin product management interface.
 
-<img src="YOUR_ADMIN_IMAGE_LINK" width="100%"/>
+<img src="https://raw.githubusercontent.com/Akshay001-A/Shoe-Mart/main/screenshots/admin.png" width="100%"/>
 
 ---
 
@@ -139,7 +115,15 @@ Professional admin product management interface.
 
 Admin order management and tracking section.
 
-<img src="YOUR_ORDERS_IMAGE_LINK" width="100%"/>
+<img src="https://raw.githubusercontent.com/Akshay001-A/Shoe-Mart/main/screenshots/orders.png" width="100%"/>
+
+---
+
+## 👤 Profile Page
+
+Customer profile management system.
+
+<img src="https://raw.githubusercontent.com/Akshay001-A/Shoe-Mart/main/screenshots/profile.png" width="100%"/>
 
 ---
 
