@@ -192,7 +192,7 @@ The application is fully responsive for:
 
 ---
 
-## 🛠️ Admin Shes Management 
+## 🛠️ Admin Product Management 
 
 ![Admin Dashboard](./screenshots/admin.png)
 
