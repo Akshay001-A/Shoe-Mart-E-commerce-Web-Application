@@ -556,7 +556,18 @@ setTimeout(() => {
 
     setProducts([...products, data]);
 
-    alert("Shoe Added Successfully");
+    
+    setTopMessage(
+  "Shoe Added Successfully"
+);
+
+setShowTopMessage(true);
+
+setTimeout(() => {
+
+  setShowTopMessage(false);
+
+}, 2000);
 
     setShoeName("");
     setShoeBrand("");
@@ -905,15 +916,23 @@ activePage === "myorders" ? (
 
             {/* HOME PAGE */}
 
-            <Banner
+           {
 
-              currentSlide={currentSlide}
+  search.trim() === "" && (
 
-              nextSlide={nextSlide}
+    <Banner
 
-              prevSlide={prevSlide}
+      currentSlide={currentSlide}
 
-            />
+      nextSlide={nextSlide}
+
+      prevSlide={prevSlide}
+
+    />
+
+  )
+
+}
 
             {/* PRODUCTS */}
 
