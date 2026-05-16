@@ -1,90 +1,210 @@
 <div align="center">
 
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f2027,50:203a43,100:2c5364&height=260&section=header&text=Shoe%20Mart&fontSize=55&fontColor=ffffff&animation=fadeIn&fontAlignY=40"/>
+
 # 👟 Shoe Mart
 
-### Modern Full Stack Shoe Shopping Web Application
+### 🛒 Modern Full Stack MERN eCommerce Shoe Shopping Platform
 
-<img src="https://img.shields.io/badge/React.js-Frontend-blue?style=for-the-badge&logo=react" />
-<img src="https://img.shields.io/badge/Node.js-Backend-green?style=for-the-badge&logo=node.js" />
-<img src="https://img.shields.io/badge/MongoDB-Database-darkgreen?style=for-the-badge&logo=mongodb" />
-<img src="https://img.shields.io/badge/Express.js-API-black?style=for-the-badge&logo=express" />
+<p align="center">
+  <img src="https://img.shields.io/badge/React.js-Frontend-61DAFB?style=for-the-badge&logo=react"/>
+  <img src="https://img.shields.io/badge/Node.js-Backend-339933?style=for-the-badge&logo=node.js"/>
+  <img src="https://img.shields.io/badge/MongoDB-Database-47A248?style=for-the-badge&logo=mongodb"/>
+  <img src="https://img.shields.io/badge/Express.js-API-black?style=for-the-badge&logo=express"/>
+  <img src="https://img.shields.io/badge/JWT-Authentication-red?style=for-the-badge"/>
+</p>
 
-<br/>
-<br/>
+---
 
-🚀 A professional modern eCommerce shoe shopping platform with Admin & Customer functionalities.
+### 🚀 Professional MERN Stack eCommerce Platform with Customer & Admin Functionalities
+
+🛍 Browse Shoes • 🛒 Cart System • 🔐 Authentication • 📦 Orders • 🛠 Admin Dashboard
 
 </div>
 
 ---
 
-# 📌 Overview
+# 🌟 Project Overview
 
-Shoe Mart is a full-stack MERN eCommerce application designed with a modern UI and responsive experience.
+Shoe Mart is a modern full-stack MERN eCommerce web application developed to provide a professional online shoe shopping experience with advanced customer and admin functionalities.
 
-The application allows customers to browse shoes, place orders, manage carts, and track order status while admins can manage products and customer orders through a professional dashboard.
+The application features:
+
+✅ Modern Responsive UI  
+✅ Authentication & Authorization  
+✅ Cart & Order Management  
+✅ Product Search & Filtering  
+✅ Admin Dashboard  
+✅ Real-Time UI Updates  
+✅ Secure REST APIs  
+✅ Professional Product Management  
+
+This project demonstrates a complete production-style eCommerce workflow using the MERN stack.
 
 ---
 
-# ✨ Features
+# ✨ Main Features
+
+---
 
 # 👤 Customer Features
 
-✅ User Authentication  
-✅ Browse Shoes  
-✅ Search Shoes  
-✅ Add To Cart  
-✅ Quantity Management  
+✅ User Registration & Login  
+✅ JWT Authentication  
+✅ Browse Shoes Collection  
+✅ Search & Filter Shoes  
+✅ Add to Cart  
+✅ Cart Quantity Management  
 ✅ Place Orders  
 ✅ My Orders Section  
 ✅ Profile Management  
-✅ Responsive UI  
+✅ Responsive User Interface  
 ✅ Modern Product Cards  
-✅ Animated Buttons & Effects
+✅ Interactive Animations  
 
 ---
 
-# 🛠️ Admin Features
+# 🛠 Admin Features
 
-✅ Add Shoes  
-✅ Edit Shoes  
+✅ Add New Shoes  
+✅ Edit Product Details  
 ✅ Delete Shoes  
-✅ Manage Shoe Stock  
-✅ Manage Customer Orders  
+✅ Manage Inventory Stock  
+✅ Customer Order Management  
 ✅ Update Order Status  
-✅ Professional Dashboard  
-✅ Animated Popup Forms  
-✅ Real-Time UI Updates
+✅ Professional Admin Dashboard  
+✅ Popup Product Forms  
+✅ Real-Time Product Updates  
 
 ---
 
-# 🖼️ Modern UI Highlights
+# 🎨 Modern UI/UX Highlights
 
-✨ Fully Responsive Layout  
-✨ Professional Product Cards  
-✨ Smooth Hover Animations  
-✨ Gradient Buttons  
-✨ Modern Admin Panels  
-✨ Animated Popup Modals  
-✨ Blur Background Effects  
-✨ Clean eCommerce Design
+✨ Fully Responsive Design  
+✨ Smooth Hover Effects  
+✨ Animated Buttons  
+✨ Glassmorphism UI Elements  
+✨ Gradient Components  
+✨ Popup Modal Forms  
+✨ Clean Shopping Layout  
+✨ Mobile Friendly Interface  
+
+---
+
+# 📸 Application Screenshots
+
+---
+
+## 🏠 Home Page
+
+Modern product browsing interface with responsive shoe cards.
+
+<img src="YOUR_HOME_PAGE_IMAGE_LINK" width="100%"/>
+
+---
+
+## 👟 Product Collection
+
+Interactive product cards with smooth hover effects.
+
+<img src="YOUR_PRODUCTS_IMAGE_LINK" width="100%"/>
+
+---
+
+## 🛒 Shopping Cart
+
+Advanced cart management with quantity controls.
+
+<img src="YOUR_CART_IMAGE_LINK" width="100%"/>
+
+---
+
+## 👤 Profile Page
+
+Customer profile management system.
+
+<img src="YOUR_PROFILE_IMAGE_LINK" width="100%"/>
+
+---
+
+## 🛠 Admin Dashboard
+
+Professional admin product management interface.
+
+<img src="YOUR_ADMIN_IMAGE_LINK" width="100%"/>
+
+---
+
+## 📦 Orders Management
+
+Admin order management and tracking section.
+
+<img src="YOUR_ORDERS_IMAGE_LINK" width="100%"/>
+
+---
+
+# ⚙️ Core Functionalities
+
+---
+
+## 🔐 Authentication System
+
+The application implements secure authentication using:
+
+✅ JWT Authentication  
+✅ Protected Routes  
+✅ Role-Based Access Control  
+✅ Secure API Authorization  
+
+Two user roles are supported:
+
+- 👤 Customer
+- 🛠 Admin
+
+---
+
+## 🛒 Shopping Workflow
+
+The customer shopping process includes:
+
+1️⃣ Browse Products  
+2️⃣ Search Shoes  
+3️⃣ Add Items to Cart  
+4️⃣ Manage Quantities  
+5️⃣ Place Orders  
+6️⃣ Track Order Status  
+
+---
+
+## 🛠 Admin Workflow
+
+The admin dashboard provides:
+
+✅ Product CRUD Operations  
+✅ Inventory Management  
+✅ Order Monitoring  
+✅ Customer Order Status Updates  
 
 ---
 
 # 🧰 Tech Stack
 
+<div align="center">
+
 | Frontend | Backend | Database | Authentication |
-|----------|----------|-----------|----------------|
+|---|---|---|---|
 | React.js | Node.js | MongoDB | JWT |
 | CSS3 | Express.js | Mongoose | Protected Routes |
-| Axios | REST API | Mongo Atlas | Role Based Access |
+| Axios | REST APIs | Mongo Atlas | Role-Based Access |
+
+</div>
 
 ---
 
 # 📂 Project Structure
 
-```bash
-SHOE MART/
+```text
+SHOE-MART/
 │
 ├── client/
 │   ├── public/
@@ -102,22 +222,34 @@ SHOE MART/
 │   ├── routes/
 │   └── server.js
 │
+├── screenshots/
+│
 ├── README.md
 ```
 
 ---
 
-# ⚙️ Installation
+# 🚀 Installation Guide
 
-# 1️⃣ Clone Repository
+---
+
+# 📥 Clone Repository
 
 ```bash
-git clone https://github.com/your-username/shoe-mart.git
+git clone https://github.com/Akshay001-A/Shoe-Mart.git
 ```
 
 ---
 
-# 2️⃣ Install Frontend Dependencies
+# 📂 Navigate Into Project
+
+```bash
+cd Shoe-Mart
+```
+
+---
+
+# 📦 Install Frontend Dependencies
 
 ```bash
 cd client
@@ -126,36 +258,18 @@ npm install
 
 ---
 
-# 3️⃣ Install Backend Dependencies
+# 📦 Install Backend Dependencies
 
 ```bash
-cd server
+cd ../server
 npm install
-```
-
----
-
-# ▶️ Run Application
-
-# Start Backend
-
-```bash
-cd server
-npm start
-```
-
-# Start Frontend
-
-```bash
-cd client
-npm start
 ```
 
 ---
 
 # 🌐 Environment Variables
 
-Create `.env` file inside `server` folder:
+Create a `.env` file inside the `server` folder:
 
 ```env
 MONGO_URI=your_mongodb_connection
@@ -165,60 +279,66 @@ PORT=5000
 
 ---
 
-# 🔐 Authentication System
+# ▶️ Run Backend Server
 
-✅ JWT Authentication  
-✅ Admin & Customer Roles  
-✅ Protected Routes  
-✅ Secure API Access
+```bash
+cd server
+npm start
+```
+
+---
+
+# ▶️ Run Frontend
+
+```bash
+cd client
+npm start
+```
+
+---
+
+# 🌍 Open Browser
+
+```text
+http://localhost:3000
+```
 
 ---
 
 # 📱 Responsive Design
 
-The application is fully responsive for:
+The application is optimized for:
 
-- 💻 Desktop
-- 📱 Mobile
-- 📲 Tablet
+✅ Desktop Devices  
+✅ Mobile Phones  
+✅ Tablets  
 
----
-
-# 📸 Application Screenshots
-
-## 🏠 Home Page
-
-![Home Page](./screenshots/home.png)
+with fully responsive layouts and adaptive UI components.
 
 ---
 
-## 🛠️ Admin Product Management 
+# 🔥 Advanced Features
 
-![Admin Dashboard](./screenshots/admin.png)
-
----
-
-## 👤 Profile Page
-
-![Profile Page](./screenshots/profile.png)
-
----
-
-## 📦 Admin Orders Management
-
-![Orders Page](./screenshots/orders.png)
+✅ Real-Time UI Updates  
+✅ Protected Admin Routes  
+✅ RESTful API Architecture  
+✅ Secure Authentication System  
+✅ Dynamic Product Rendering  
+✅ Responsive Product Grid  
+✅ Modern Shopping Experience  
 
 ---
 
 # 🚀 Future Improvements
 
-- 💳 Payment Gateway Integration
-- ❤️ Wishlist System
-- ⭐ Product Reviews
-- 🌙 Dark Mode
-- 🔔 Notifications
-- 📦 Live Order Tracking
-- ☁️ Cloud Image Uploads
+💳 Payment Gateway Integration  
+❤️ Wishlist System  
+⭐ Product Ratings & Reviews  
+🌙 Dark Mode Support  
+🔔 Notification System  
+📦 Live Order Tracking  
+☁ Cloud Image Uploads  
+📱 Progressive Web App (PWA)  
 
 ---
 
@@ -226,16 +346,40 @@ The application is fully responsive for:
 
 <div align="center">
 
-## Akshay R
+# Akshay R 🚀
 
-Full Stack Developer 🚀
+### Full Stack Developer
+
+<p align="center">
+  <a href="https://github.com/Akshay001-A">
+    <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github"/>
+  </a>
+
+  <a href="https://www.linkedin.com/in/akshayofficial0207">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin"/>
+  </a>
+
+  <a href="https://www.instagram.com/akshay_authentic">
+    <img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram"/>
+  </a>
+</p>
 
 </div>
 
 ---
 
+# 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
 <div align="center">
 
-### ⭐ If you like this project, give it a star on GitHub ⭐
+# ⭐ Thanks for Visiting Shoe Mart ⭐
+
+### 🚀 If you found this project useful, don't forget to star the repository.
+
+<img src="https://readme-typing-svg.herokuapp.com?font=Poppins&size=24&duration=3000&color=36BCF7&center=true&vCenter=true&width=750&lines=Modern+MERN+Stack+eCommerce+Application;Professional+Shoe+Shopping+Platform;Built+With+React+%2B+Node.js+%2B+MongoDB"/>
 
 </div>
