@@ -16,6 +16,7 @@ import Profile from "./components/Profile";
 import AddShoes from "./components/AddShoes";
 import ManageShoes from "./components/ManageShoes";
 import Orders from "./components/Orders";
+import MyOrders from "./components/MyOrders";
 
 function App() {
 
@@ -864,100 +865,14 @@ activePage === "orders" ? (
 ) :
 activePage === "myorders" ? (
 
-          <div className="admin-page">
+  <MyOrders
 
-            <h1>
-              My Orders 📦
-            </h1>
+    myOrders={myOrders}
 
-            <div className="orders-container">
+  />
 
-              {myOrders.length === 0 ? (
-
-                <p>No Orders Found</p>
-
-              ) : (
-
-                myOrders.map((order) => (
-
-                  <div
-                    key={order._id}
-                    className="order-card"
-                  >
-
-                    <div className="order-left">
-
-                      <p>
-                        Total:
-                        ₹{order.totalPrice}
-                      </p>
-
-                      <p className="order-status">
-
-                        {order.orderStatus}
-
-                      </p>
-
-                    </div>
-
-                    <div className="order-right">
-
-                      <h3>
-                        Products:
-                      </h3>
-
-                      <div className="order-items">
-
-                        {order.orderItems.map(
-                          (item, index) => (
-
-                            <div
-                              key={index}
-                              className="order-item"
-                            >
-
-                              <img
-                                src={item.image}
-                                alt={item.name}
-                              />
-
-                              <div className="order-item-details">
-
-                                <h4>
-                                  {item.name}
-                                </h4>
-
-                                <p>
-                                  ₹{item.price}
-                                </p>
-
-                                <p>
-                                  Qty:
-                                  {item.quantity}
-                                </p>
-
-                              </div>
-
-                            </div>
-
-                          )
-                        )}
-
-                      </div>
-
-                    </div>
-
-                  </div>
-
-                ))
-
-              )}
-
-            </div>
-
-          </div>
-
-        ) : activePage === "profile" ? (
+) :
+     activePage === "profile" ? (
 
           <Profile
             userInfo={userInfo}
