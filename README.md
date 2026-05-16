@@ -2,7 +2,6 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f2027,50:203a43,100:2c5364&height=260&section=header&text=Shoe%20Mart&fontSize=55&fontColor=ffffff&animation=fadeIn&fontAlignY=40"/>
 
-# 👟 Shoe Mart
 
 ### 🛒 Modern Full Stack MERN eCommerce Shoe Shopping Platform
 
