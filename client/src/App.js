@@ -15,6 +15,7 @@ import Cart from "./components/Cart";
 import Profile from "./components/Profile";
 import AddShoes from "./components/AddShoes";
 import ManageShoes from "./components/ManageShoes";
+import Orders from "./components/Orders";
 
 function App() {
 
@@ -510,8 +511,17 @@ const updateOrderStatus = async (
     );
 
     fetchOrders();
+setTopMessage(
+  "Order Status Updated ✅"
+);
 
-    alert("Order Status Updated");
+setShowTopMessage(true);
+
+setTimeout(() => {
+
+  setShowTopMessage(false);
+
+}, 2000);
 
   } catch (error) {
 
@@ -838,150 +848,21 @@ return (
 
 />
 
-): activePage === "orders" ? (
+): 
+activePage === "orders" ? (
 
-          <div className="admin-page">
+  <Orders
 
-            <h1>
-              Customer Orders 📦
-            </h1>
+    orders={orders}
 
-            <div className="orders-container">
+    updateOrderStatus={
+      updateOrderStatus
+    }
 
-              {orders.length === 0 ? (
+  />
 
-                <p>No Orders Found</p>
-
-              ) : (
-
-                orders.map((order) => (
-
-                  <div
-                    key={order._id}
-                    className="order-card"
-                  >
-
-                    <div className="order-left">
-
-                      <h2>
-                        Customer:
-                        {order.user?.name}
-                      </h2>
-
-                      <p>
-                        Email:
-                        {order.user?.email}
-                      </p>
-
-                      <p>
-                        Total:
-                        ₹{order.totalPrice}
-                      </p>
-
-                      <p>
-                        Payment:
-                        {order.isPaid
-                          ? " Paid"
-                          : " Not Paid"}
-                      </p>
-
-                      <p>
-                        Status:
-                        {order.orderStatus}
-                      </p>
-
-                      <select
-
-                        value={order.orderStatus}
-
-                        onChange={(e) =>
-
-                          updateOrderStatus(
-
-                            order._id,
-
-                            e.target.value
-
-                          )
-
-                        }
-
-                      >
-
-                        <option value="Pending">
-                          Pending
-                        </option>
-
-                        <option value="Shipped">
-                          Shipped
-                        </option>
-
-                        <option value="Delivered">
-                          Delivered
-                        </option>
-
-                      </select>
-
-                    </div>
-
-                    <div className="order-right">
-
-                      <h3>
-                        Products:
-                      </h3>
-
-                      <div className="order-items">
-
-                        {order.orderItems.map(
-                          (item, index) => (
-
-                            <div
-                              key={index}
-                              className="order-item"
-                            >
-
-                              <img
-                                src={item.image}
-                                alt={item.name}
-                              />
-
-                              <div>
-
-                                <h4>
-                                  {item.name}
-                                </h4>
-
-                                <p>
-                                  ₹{item.price}
-                                </p>
-
-                                <p>
-                                  Qty:
-                                  {item.quantity}
-                                </p>
-
-                              </div>
-
-                            </div>
-
-                          )
-                        )}
-
-                      </div>
-
-                    </div>
-
-                  </div>
-
-                ))
-
-              )}
-
-            </div>
-
-          </div>
-
-        ) : activePage === "myorders" ? (
+) :
+activePage === "myorders" ? (
 
           <div className="admin-page">
 

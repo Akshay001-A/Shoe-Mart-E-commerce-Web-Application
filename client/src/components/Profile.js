@@ -2,8 +2,6 @@ import "./Profile.css";
 
 import { useState } from "react";
 
-import axios from "axios";
-
 function Profile({ userInfo }) {
 
   const [editing, setEditing] =
@@ -21,17 +19,17 @@ function Profile({ userInfo }) {
   const [address, setAddress] =
     useState(userInfo.address || "");
 
-  // MESSAGE STATE
-
-  const [message, setMessage] =
-    useState("");
+  // TOP MESSAGE
 
   const [showMessage, setShowMessage] =
     useState(false);
 
+  const [message, setMessage] =
+    useState("");
+
   // SAVE PROFILE
 
-  const saveProfile = async () => {
+  const saveProfile = () => {
 
     const nameRegex =
       /^[A-Za-z ]+$/;
@@ -53,7 +51,7 @@ function Profile({ userInfo }) {
 
         setShowMessage(false);
 
-      }, 2000);
+      }, 3000);
 
       return;
 
@@ -73,7 +71,7 @@ function Profile({ userInfo }) {
 
         setShowMessage(false);
 
-      }, 2000);
+      }, 3000);
 
       return;
 
@@ -82,8 +80,11 @@ function Profile({ userInfo }) {
     // PASSWORD VALIDATION
 
     if (
+
       password &&
+
       password.length < 6
+
     ) {
 
       setMessage(
@@ -96,7 +97,7 @@ function Profile({ userInfo }) {
 
         setShowMessage(false);
 
-      }, 2000);
+      }, 3000);
 
       return;
 
@@ -105,8 +106,11 @@ function Profile({ userInfo }) {
     // ADDRESS VALIDATION
 
     if (
+
       !userInfo.isAdmin &&
+
       address.length < 10
+
     ) {
 
       setMessage(
@@ -119,345 +123,297 @@ function Profile({ userInfo }) {
 
         setShowMessage(false);
 
-      }, 2000);
+      }, 3000);
 
       return;
 
     }
 
-    try {
+    // UPDATE USER
 
-      const updatedData = {
+    const updatedUser = {
 
-        name,
+      ...userInfo,
 
-        email,
+      name,
 
-        address,
+      email,
 
-      };
+      address,
 
-      if (password) {
+      password,
 
-        updatedData.password =
-          password;
+    };
 
-      }
+    localStorage.setItem(
 
-      const { data } =
-        await axios.put(
+      "userInfo",
 
-          "http://localhost:5000/api/auth/profile",
+      JSON.stringify(updatedUser)
 
-          updatedData,
+    );
 
-          {
+    setMessage(
+      "Profile Updated Successfully ✅"
+    );
 
-            headers: {
+    setShowMessage(true);
 
-              Authorization:
-                `Bearer ${userInfo.token}`,
+    setTimeout(() => {
 
-            },
+      setShowMessage(false);
 
-          }
+    }, 3000);
 
-        );
-
-      localStorage.setItem(
-
-        "userInfo",
-
-        JSON.stringify(data)
-
-      );
-
-      setMessage(
-        "Profile Updated Successfully ✅"
-      );
-
-      setShowMessage(true);
-
-      setTimeout(() => {
-
-        setShowMessage(false);
-
-        setEditing(false);
-
-      }, 2000);
-
-    } catch (error) {
-
-      setMessage(
-        "Profile Update Failed"
-      );
-
-      setShowMessage(true);
-
-      setTimeout(() => {
-
-        setShowMessage(false);
-
-      }, 2000);
-
-    }
+    setEditing(false);
 
   };
 
   return (
 
-    <div className="profile-page">
+    <>
 
-      <h1 className="profile-title">
+      {
 
-        Profile 👤
+        showMessage && (
 
-      </h1>
+          <div className="top-message">
 
-      <div className="profile-card">
-
-        {/* TOP */}
-
-        <div className="profile-top">
-
-          <div className="profile-avatar">
-
-            {name.charAt(0)}
+            {message}
 
           </div>
 
-          <div>
+        )
 
-            <h2>{name}</h2>
+      }
 
-            <span className="role-badge">
+      <div className="profile-page">
 
-              {userInfo.isAdmin
+        <h1 className="profile-title">
 
-                ? "Admin"
+          Profile 👤
 
-                : "Customer"}
+        </h1>
 
-            </span>
+        <div className="profile-card">
+
+          {/* TOP */}
+
+          <div className="profile-top">
+
+            <div className="profile-avatar">
+
+              {name.charAt(0)}
+
+            </div>
+
+            <div>
+
+              <h2>{name}</h2>
+
+              <span className="role-badge">
+
+                {userInfo.isAdmin
+
+                  ? "Admin"
+
+                  : "Customer"}
+
+              </span>
+
+            </div>
 
           </div>
+
+          {/* VIEW MODE */}
+
+          {!editing ? (
+
+            <div className="profile-view">
+
+              <p>
+
+                <strong>Email:</strong>
+
+                {email}
+
+              </p>
+
+              {!userInfo.isAdmin && (
+
+                <p>
+
+                  <strong>Address:</strong>
+
+                  {address || "No Address"}
+
+                </p>
+
+              )}
+
+              <button
+
+                className="edit-btn"
+
+                onClick={() =>
+
+                  setEditing(true)
+
+                }
+
+              >
+
+                Edit Profile
+
+              </button>
+
+            </div>
+
+          ) : (
+
+            /* EDIT MODE */
+
+            <div className="profile-form">
+
+              <label>Name</label>
+
+              <input
+
+                type="text"
+
+                value={name}
+
+                onChange={(e) =>
+
+                  setName(e.target.value)
+
+                }
+
+              />
+
+              <label>Email</label>
+
+              <input
+
+                type="email"
+
+                value={email}
+
+                onChange={(e) =>
+
+                  setEmail(e.target.value)
+
+                }
+
+              />
+
+              <label>
+
+                Change Password
+
+              </label>
+
+              <input
+
+                type="password"
+
+                placeholder="Minimum 6 characters"
+
+                value={password}
+
+                onChange={(e) =>
+
+                  setPassword(e.target.value)
+
+                }
+
+              />
+
+              {!userInfo.isAdmin && (
+
+                <>
+
+                  <label>Address</label>
+
+                  <textarea
+
+                    placeholder="Enter delivery address"
+
+                    value={address}
+
+                    onChange={(e) =>
+
+                      setAddress(e.target.value)
+
+                    }
+
+                  />
+
+                </>
+
+              )}
+
+              <button
+
+                className="save-btn"
+
+                onClick={saveProfile}
+
+              >
+
+                Save Changes
+
+              </button>
+
+              <button
+
+                className="cancel-btn"
+
+                onClick={() =>
+
+                  setEditing(false)
+
+                }
+
+              >
+
+                Cancel
+
+              </button>
+
+            </div>
+
+          )}
+
+          {/* LOGOUT */}
+
+          <button
+
+            className="logout-btn"
+
+            onClick={() => {
+
+              localStorage.removeItem(
+
+                "userInfo"
+
+              );
+
+              window.location.reload();
+
+            }}
+
+          >
+
+            Logout
+
+          </button>
 
         </div>
 
-        {/* NORMAL VIEW */}
-
-        {!editing ? (
-
-          <div className="profile-view">
-
-            
-            <div className="profile-info-box">
-
-  <span className="info-label">
-    Email
-  </span>
-
-  <p className="info-value">
-    {email}
-  </p>
-
-</div>
-
-{!userInfo.isAdmin && (
-
-  <div className="profile-info-box">
-
-    <span className="info-label">
-      Delivery Address
-    </span>
-
-    <p className="info-value address-text">
-      {address || "No Address Added"}
-    </p>
-
-  </div>
-
-)}
-
-            <button
-
-              className="edit-btn"
-
-              onClick={() =>
-
-                setEditing(true)
-
-              }
-
-            >
-
-              Edit Profile
-
-            </button>
-
-          </div>
-
-        ) : (
-
-          <div className="profile-form">
-
-            <label>Name</label>
-
-            <input
-
-              type="text"
-
-              value={name}
-
-              onChange={(e) =>
-
-                setName(e.target.value)
-
-              }
-
-            />
-
-            <label>Email</label>
-
-            <input
-
-              type="email"
-
-              value={email}
-
-              onChange={(e) =>
-
-                setEmail(e.target.value)
-
-              }
-
-            />
-
-            <label>
-
-              Change Password
-
-            </label>
-
-            <input
-
-              type="password"
-
-              placeholder="Minimum 6 characters"
-
-              value={password}
-
-              onChange={(e) =>
-
-                setPassword(e.target.value)
-
-              }
-
-            />
-
-            {!userInfo.isAdmin && (
-
-              <>
-
-                <label>
-
-                  Address
-
-                </label>
-
-                <textarea
-
-                  placeholder="Enter delivery address"
-
-                  value={address}
-
-                  onChange={(e) =>
-
-                    setAddress(e.target.value)
-
-                  }
-
-                />
-
-              </>
-
-            )}
-
-            <button
-
-              className="save-btn"
-
-              onClick={saveProfile}
-
-            >
-
-              Save Changes
-
-            </button>
-
-            <button
-
-              className="cancel-btn"
-
-              onClick={() =>
-
-                setEditing(false)
-
-              }
-
-            >
-
-              Cancel
-
-            </button>
-
-          </div>
-
-        )}
-
-        {/* MESSAGE */}
-
-        {
-
-          showMessage && (
-
-            <p className="profile-message">
-
-              {message}
-
-            </p>
-
-          )
-
-        }
-
-        {/* LOGOUT */}
-
-        <button
-
-          className="logout-btn"
-
-          onClick={() => {
-
-            localStorage.removeItem(
-
-              "userInfo"
-
-            );
-
-            window.location.reload();
-
-          }}
-
-        >
-
-          Logout
-
-        </button>
-
       </div>
 
-    </div>
+    </>
 
   );
 

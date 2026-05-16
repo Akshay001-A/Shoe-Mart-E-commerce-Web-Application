@@ -46,14 +46,17 @@ function ProductCard({
       </p>
 
       <h1>₹{price}</h1>
+{/* ADMIN ONLY STOCK */}
 
-      {/* STOCK */}
+{userInfo?.isAdmin && (
 
-      <p className="stock">
+  <p className="stock">
 
-        Stock: {countInStock}
+    Stock: {countInStock}
 
-      </p>
+  </p>
+
+)}
 
       {/* CUSTOMER ONLY */}
 
