@@ -1,0 +1,184 @@
+.admin-page {
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 50px 20px;
+
+}
+
+/* TITLE */
+
+.admin-page h1 {
+
+  font-size: 50px;
+
+  font-weight: 800;
+
+  color: #08142c;
+
+  margin-bottom: 10px;
+
+}
+
+/* SUBTITLE */
+
+.admin-page h2 {
+
+  font-size: 24px;
+
+  color: #2f5bea;
+
+  margin-bottom: 30px;
+
+  font-weight: 600;
+
+}
+
+/* FORM BOX */
+
+.admin-form {
+
+  width: 500px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 22px;
+
+  background: white;
+
+  padding: 40px;
+
+  border-radius: 28px;
+
+  box-shadow:
+    0 10px 35px rgba(0,0,0,0.08);
+
+  border: 1px solid #f1f1f1;
+
+  transition: 0.3s;
+
+}
+
+.admin-form:hover {
+
+  transform: translateY(-3px);
+
+}
+
+/* INPUTS */
+
+.admin-form input,
+.admin-form textarea {
+
+  padding: 17px;
+
+  border: 1.5px solid #dcdcdc;
+
+  border-radius: 14px;
+
+  font-size: 16px;
+
+  outline: none;
+
+  transition: 0.3s;
+
+  background: #fafafa;
+
+  font-family: inherit;
+
+}
+
+/* INPUT FOCUS */
+
+.admin-form input:focus,
+.admin-form textarea:focus {
+
+  border: 2px solid #2f5bea;
+
+  background: white;
+
+  box-shadow:
+    0 0 10px rgba(47,91,234,0.15);
+
+}
+
+/* TEXTAREA */
+
+.admin-form textarea {
+
+  height: 130px;
+
+  resize: none;
+
+}
+
+/* BUTTON */
+
+.admin-form button {
+
+  padding: 17px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #08142c,
+      #2f5bea
+    );
+
+  color: white;
+
+  border: none;
+
+  border-radius: 14px;
+
+  font-size: 18px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+
+  box-shadow:
+    0 8px 20px rgba(47,91,234,0.25);
+
+}
+
+/* BUTTON HOVER */
+
+.admin-form button:hover {
+
+  transform: scale(1.03);
+
+  box-shadow:
+    0 12px 25px rgba(47,91,234,0.35);
+
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 600px) {
+
+  .admin-form {
+
+    width: 95%;
+
+    padding: 25px;
+
+  }
+
+  .admin-page h1 {
+
+    font-size: 38px;
+
+  }
+
+}

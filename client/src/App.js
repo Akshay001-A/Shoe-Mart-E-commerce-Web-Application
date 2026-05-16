@@ -13,6 +13,7 @@ import Banner from "./components/Banner";
 import ProductCard from "./components/ProductCard";
 import Cart from "./components/Cart";
 import Profile from "./components/Profile";
+import AddShoes from "./components/AddShoes";
 
 function App() {
 
@@ -20,33 +21,14 @@ function App() {
 
  
 
-  const [showCart, setShowCart] = useState(false);
 
-  const [showProfile, setShowProfile] =
-    useState(false);
 
   const [showRegister, setShowRegister] =
     useState(false);
 
   const [products, setProducts] = useState([]);
 
-  const [showAdminProducts,
-    setShowAdminProducts] =
-    useState(false);
-
-  const [showOrders,
-    setShowOrders] =
-    useState(false);
-    //Customer State
-
-    const [showMyOrders,
-setShowMyOrders] =
-useState(false);
-
-const [myOrders,
-setMyOrders] =
-useState([]);
-
+  
 const [topMessage, setTopMessage] =
   useState("");
 
@@ -73,8 +55,12 @@ const prevSlide = () => {
   );
 
 };
-
+const [activePage, setActivePage] =
+  useState("home");
   // ADMIN STATES
+
+  const [myOrders, setMyOrders] =
+  useState([]);
 
   const [shoeName, setShoeName] = useState("");
   const [shoeBrand, setShoeBrand] = useState("");
@@ -84,8 +70,7 @@ const prevSlide = () => {
   const [shoeImage, setShoeImage] = useState("");
   const [shoeStock, setShoeStock] = useState("");
   const [orders, setOrders] = useState([]);
-  const [showManageShoes, setShowManageShoes] =
-  useState(false);
+
   const [editingProduct, setEditingProduct] =
   useState(null);
 
@@ -722,490 +707,467 @@ useEffect(() => {
 );
 return (
 
-
-  
-
   <>
 
-  {
+    {/* TOP MESSAGE */}
 
-  showTopMessage && (
+    {
 
-    <div className="top-message">
+      showTopMessage && (
 
-      {topMessage}
+        <div className="top-message">
 
-    </div>
+          {topMessage}
 
-  )
+        </div>
 
-}
+      )
+
+    }
+
+    {/* EDIT POPUP */}
 
     {editPopup}
 
-
     <div>
 
+      {/* NAVBAR */}
+
       <Navbar
-  setShowCart={setShowCart}
-  setShowProfile={setShowProfile}
-  setShowAdminProducts={
-    setShowAdminProducts
-  }
-  setShowOrders={setShowOrders}
-  setShowManageShoes={
-    setShowManageShoes
-  }
-  setShowMyOrders={
-    setShowMyOrders
-  }
 
-  search={search}
-  setSearch={setSearch}
-/>
+        setActivePage={setActivePage}
 
-      {/* ADMIN PAGE */}
+        search={search}
 
-      {showAdminProducts ? (
+        setSearch={setSearch}
 
-        <div className="admin-page">
+      />
 
-          <h1>
-            Admin Dashboard 👑
-          </h1>
+      {/* PAGE RENDER */}
 
-          <h2>Add New Shoes</h2>
+      {
 
-          <div className="admin-form">
+        activePage === "add" ? (
 
-  <input
-    type="text"
-    placeholder="Shoe Name"
-    value={shoeName}
-    onChange={(e) =>
-      setShoeName(e.target.value)
-    }
-  />
+          <AddShoes
 
-  <input
-    type="text"
-    placeholder="Brand"
-    value={shoeBrand}
-    onChange={(e) =>
-      setShoeBrand(e.target.value)
-    }
-  />
+            shoeName={shoeName}
+            setShoeName={setShoeName}
 
-  <input
-    type="text"
-    placeholder="Category"
-    value={shoeCategory}
-    onChange={(e) =>
-      setShoeCategory(e.target.value)
-    }
-  />
+            shoeBrand={shoeBrand}
+            setShoeBrand={setShoeBrand}
 
-  <textarea
-    placeholder="Description"
-    value={shoeDescription}
-    onChange={(e) =>
-      setShoeDescription(e.target.value)
-    }
-  />
+            shoeCategory={shoeCategory}
+            setShoeCategory={setShoeCategory}
 
-  <input
-    type="number"
-    placeholder="Price"
-    value={shoePrice}
-    onChange={(e) =>
-      setShoePrice(e.target.value)
-    }
-  />
+            shoeDescription={shoeDescription}
+            setShoeDescription={setShoeDescription}
 
-  <input
-    type="text"
-    placeholder="Image URL"
-    value={shoeImage}
-    onChange={(e) =>
-      setShoeImage(e.target.value)
-    }
-  />
+            shoePrice={shoePrice}
+            setShoePrice={setShoePrice}
 
-  <input
-    type="number"
-    placeholder="Count In Stock"
-    value={shoeStock}
-    onChange={(e) =>
-      setShoeStock(e.target.value)
-    }
-  />
+            shoeImage={shoeImage}
+            setShoeImage={setShoeImage}
 
-  <button onClick={addNewShoe}>
-    Add Shoe
-  </button>
+            shoeStock={shoeStock}
+            setShoeStock={setShoeStock}
 
-</div>
+            addNewShoe={addNewShoe}
 
-        </div>
-
-
-) : showManageShoes ? (
-
-  <div className="admin-page">
-
-    <h1>
-      Manage Shoes 👟
-    </h1>
-
-    <div className="manage-products-grid">
-
-      {products.map((product) => (
-
-        <div
-          key={product._id}
-          className="manage-product-card"
-        >
-
-          <img
-            src={product.image}
-            alt={product.name}
           />
 
-          <h2>{product.name}</h2>
+        ) : activePage === "manage" ? (
 
-          <p>{product.brand}</p>
+          <div className="admin-page">
 
-          <p>{product.category}</p>
+            <h1>
+              Manage Shoes 👟
+            </h1>
 
-          <p>₹{product.price}</p>
+            <div className="manage-products-grid">
 
-          <p>
-            Stock:
-            {product.countInStock}
-          </p>
-<div className="manage-buttons">
+              {products.map((product) => (
 
-  <button
-    className="edit-btn"
-    onClick={() =>
-      openEditForm(product)
-    }
-  >
-    Edit
-  </button>
+                <div
+                  key={product._id}
+                  className="manage-product-card"
+                >
 
-  <button
-    className="delete-btn"
-    onClick={() =>
-      deleteProduct(product._id)
-    }
-  >
-    Delete
-  </button>
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                  />
 
-</div>
+                  <h2>{product.name}</h2>
 
-        </div>
+                  <p>{product.brand}</p>
 
-      ))}
+                  <p>{product.category}</p>
 
-    </div>
+                  <p>₹{product.price}</p>
 
-  </div>
+                  <p>
+                    Stock:
+                    {product.countInStock}
+                  </p>
 
-    ) : showOrders ? (
+                  <div className="manage-buttons">
 
-  <div className="admin-page">
+                    <button
+                      className="edit-btn"
+                      onClick={() =>
+                        openEditForm(product)
+                      }
+                    >
+                      Edit
+                    </button>
 
-    <h1>
-      Customer Orders 📦
-    </h1>
+                    <button
+                      className="delete-btn"
+                      onClick={() =>
+                        deleteProduct(product._id)
+                      }
+                    >
+                      Delete
+                    </button>
 
-    <div className="orders-container">
+                  </div>
 
-      {orders.length === 0 ? (
+                </div>
 
-        <p>No Orders Found</p>
-
-      ) : (
-
-        orders.map((order) => (
-
-          <div
-            key={order._id}
-            className="order-card"
-          >
-
-            {/* LEFT SIDE */}
-
-            <div className="order-left">
-
-              <h2>
-                Customer:
-                {order.user?.name}
-              </h2>
-
-              <p>
-                Email:
-                {order.user?.email}
-              </p>
-
-              <p>
-                Total:
-                ₹{order.totalPrice}
-              </p>
-
-              <p>
-                Payment:
-                {order.isPaid
-                  ? " Paid"
-                  : " Not Paid"}
-              </p>
-              <p>
-
-  Status:
-  {order.orderStatus}
-
-</p>
-
-<select
-
-  value={order.orderStatus}
-
-  onChange={(e) =>
-
-    updateOrderStatus(
-
-      order._id,
-
-      e.target.value
-
-    )
-
-  }
-
->
-
-  <option value="Pending">
-    Pending
-  </option>
-
-  <option value="Shipped">
-    Shipped
-  </option>
-
-  <option value="Delivered">
-    Delivered
-  </option>
-
-</select>
+              ))}
 
             </div>
 
+          </div>
 
-            {/* RIGHT SIDE */}
+        ) : activePage === "orders" ? (
 
-            <div className="order-right">
+          <div className="admin-page">
 
-              <h3>Products:</h3>
+            <h1>
+              Customer Orders 📦
+            </h1>
 
-              <div className="order-items">
+            <div className="orders-container">
 
-                {order.orderItems.map(
-                  (item, index) => (
+              {orders.length === 0 ? (
 
-                    <div
-                      key={index}
-                      className="order-item"
-                    >
+                <p>No Orders Found</p>
 
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                      />
+              ) : (
 
-                      <div>
+                orders.map((order) => (
 
-                        <h4>
-                          {item.name}
-                        </h4>
+                  <div
+                    key={order._id}
+                    className="order-card"
+                  >
 
-                        <p>
-                          ₹{item.price}
-                        </p>
+                    <div className="order-left">
 
-                        <p>
-                          Qty:
-                          {item.quantity}
-                        </p>
+                      <h2>
+                        Customer:
+                        {order.user?.name}
+                      </h2>
+
+                      <p>
+                        Email:
+                        {order.user?.email}
+                      </p>
+
+                      <p>
+                        Total:
+                        ₹{order.totalPrice}
+                      </p>
+
+                      <p>
+                        Payment:
+                        {order.isPaid
+                          ? " Paid"
+                          : " Not Paid"}
+                      </p>
+
+                      <p>
+                        Status:
+                        {order.orderStatus}
+                      </p>
+
+                      <select
+
+                        value={order.orderStatus}
+
+                        onChange={(e) =>
+
+                          updateOrderStatus(
+
+                            order._id,
+
+                            e.target.value
+
+                          )
+
+                        }
+
+                      >
+
+                        <option value="Pending">
+                          Pending
+                        </option>
+
+                        <option value="Shipped">
+                          Shipped
+                        </option>
+
+                        <option value="Delivered">
+                          Delivered
+                        </option>
+
+                      </select>
+
+                    </div>
+
+                    <div className="order-right">
+
+                      <h3>
+                        Products:
+                      </h3>
+
+                      <div className="order-items">
+
+                        {order.orderItems.map(
+                          (item, index) => (
+
+                            <div
+                              key={index}
+                              className="order-item"
+                            >
+
+                              <img
+                                src={item.image}
+                                alt={item.name}
+                              />
+
+                              <div>
+
+                                <h4>
+                                  {item.name}
+                                </h4>
+
+                                <p>
+                                  ₹{item.price}
+                                </p>
+
+                                <p>
+                                  Qty:
+                                  {item.quantity}
+                                </p>
+
+                              </div>
+
+                            </div>
+
+                          )
+                        )}
 
                       </div>
 
                     </div>
 
-                  )
-                )}
+                  </div>
 
-              </div>
+                ))
+
+              )}
 
             </div>
 
           </div>
 
-        ))
+        ) : activePage === "myorders" ? (
 
-      )}
+          <div className="admin-page">
 
-    </div>
+            <h1>
+              My Orders 📦
+            </h1>
 
-  </div>
+            <div className="orders-container">
 
+              {myOrders.length === 0 ? (
 
-) : showMyOrders ? (
+                <p>No Orders Found</p>
 
-  <div className="admin-page">
+              ) : (
 
-    <h1>
-      My Orders 📦
-    </h1>
+                myOrders.map((order) => (
 
-    <div className="orders-container">
+                  <div
+                    key={order._id}
+                    className="order-card"
+                  >
 
-      {myOrders.length === 0 ? (
+                    <div className="order-left">
 
-        <p>No Orders Found</p>
+                      <p>
+                        Total:
+                        ₹{order.totalPrice}
+                      </p>
 
-      ) : (
+                      <p className="order-status">
 
-        myOrders.map((order) => (
+                        {order.orderStatus}
 
-          <div
-            key={order._id}
-            className="order-card"
-          >
+                      </p>
 
-            <div className="order-left">
+                    </div>
 
-              <p>
-                Total:
-                ₹{order.totalPrice}
-              </p>
+                    <div className="order-right">
 
-             <p className="order-status">
-  {order.orderStatus}
-</p>
+                      <h3>
+                        Products:
+                      </h3>
 
-            </div>
+                      <div className="order-items">
 
-            <div className="order-right">
+                        {order.orderItems.map(
+                          (item, index) => (
 
-              <h3>Products:</h3>
+                            <div
+                              key={index}
+                              className="order-item"
+                            >
 
-              <div className="order-items">
+                              <img
+                                src={item.image}
+                                alt={item.name}
+                              />
 
-                {order.orderItems.map(
-                  (item, index) => (
+                              <div className="order-item-details">
 
-                    <div
-                      key={index}
-                      className="order-item"
-                    >
+                                <h4>
+                                  {item.name}
+                                </h4>
 
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                      />
+                                <p>
+                                  ₹{item.price}
+                                </p>
 
-                      <div className="order-item-details">
+                                <p>
+                                  Qty:
+                                  {item.quantity}
+                                </p>
 
+                              </div>
 
-                        <h4>
-                          {item.name}
-                        </h4>
+                            </div>
 
-                        <p>
-                          ₹{item.price}
-                        </p>
-
-                        <p>
-                          Qty:
-                          {item.quantity}
-                        </p>
+                          )
+                        )}
 
                       </div>
 
                     </div>
 
-                  )
-                )}
+                  </div>
 
-              </div>
+                ))
+
+              )}
 
             </div>
 
           </div>
 
-        ))
+        ) : activePage === "profile" ? (
 
-      )}
+          <Profile
+            userInfo={userInfo}
+          />
+
+        ) : activePage === "cart" ? (
+
+          <Cart
+
+            cartItems={cartItems}
+            setCartItems={setCartItems}
+
+            updateQuantity={updateQuantity}
+
+            removeFromCart={removeFromCart}
+
+            paymentMethod={paymentMethod}
+
+            setPaymentMethod={setPaymentMethod}
+
+            fetchProducts={fetchProducts}
+
+            fetchMyOrders={fetchMyOrders}
+
+          />
+
+        ) : (
+
+          <>
+
+            {/* HOME PAGE */}
+
+            <Banner
+
+              currentSlide={currentSlide}
+
+              nextSlide={nextSlide}
+
+              prevSlide={prevSlide}
+
+            />
+
+            {/* PRODUCTS */}
+
+            <div className="products-container">
+
+              {filteredProducts.map((product) => (
+
+                <ProductCard
+
+                  key={product._id}
+
+                  _id={product._id}
+
+                  name={product.name}
+
+                  brand={product.brand}
+
+                  category={product.category}
+
+                  description={product.description}
+
+                  price={product.price}
+
+                  image={product.image}
+
+                  countInStock={product.countInStock}
+
+                  addToCart={() =>
+                    addToCart(product)
+                  }
+
+                />
+
+              ))}
+
+            </div>
+
+          </>
+
+        )
+
+      }
 
     </div>
 
-  </div>
-
-      ) :showProfile ? (
-
-  <Profile
-    userInfo={userInfo}
-  />
-
-) :
-       showCart ? (
-     //car page in customer 
-  <Cart
-  cartItems={cartItems}
-  setCartItems={setCartItems}
-  updateQuantity={updateQuantity}
-  removeFromCart={removeFromCart}
-  paymentMethod={paymentMethod}
-  setPaymentMethod={setPaymentMethod}
-  fetchProducts={fetchProducts}
-  fetchMyOrders={fetchMyOrders}
-/>
-
-) :  (
-        <>
-          {/* HOME PAGE  Banner  */}
-      
-          <Banner
-  currentSlide={currentSlide}
-  nextSlide={nextSlide}
-  prevSlide={prevSlide}
-/>
-
-
-
-          {/* PRODUCTS */}
-          <div className="products-container">
-            {filteredProducts.map((product) => (
-              <ProductCard
-                key={product._id}
-                _id={product._id}
-                name={product.name}
-                brand={product.brand}
-                category={product.category}
-                description={product.description}
-                price={product.price}
-                image={product.image}
-                countInStock={product.countInStock}
-                addToCart={() => addToCart(product)}
-              />
-            ))}
-          </div>
-        </>
-      )}
-    </div>
   </>
+
 );
 
 }

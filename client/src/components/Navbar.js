@@ -2,12 +2,7 @@ import "./Navbar.css";
 
 function Navbar({
 
-  setShowCart,
-  setShowProfile,
-  setShowAdminProducts,
-  setShowOrders,
-  setShowManageShoes,
-  setShowMyOrders,
+  setActivePage,
 
   search,
   setSearch,
@@ -55,21 +50,9 @@ function Navbar({
         {/* HOME */}
 
         <button
-          onClick={() => {
-
-            setShowCart(false);
-
-            setShowProfile(false);
-
-            setShowAdminProducts(false);
-
-            setShowOrders(false);
-
-            setShowManageShoes(false);
-
-            setShowMyOrders(false);
-
-          }}
+          onClick={() =>
+            setActivePage("home")
+          }
         >
           Home
         </button>
@@ -81,61 +64,25 @@ function Navbar({
           <>
 
             <button
-              onClick={() => {
-
-                setShowCart(true);
-
-                setShowProfile(false);
-
-                setShowAdminProducts(false);
-
-                setShowOrders(false);
-
-                setShowManageShoes(false);
-
-                setShowMyOrders(false);
-
-              }}
+              onClick={() =>
+                setActivePage("cart")
+              }
             >
               Cart
             </button>
 
             <button
-              onClick={() => {
-
-                setShowMyOrders(true);
-
-                setShowCart(false);
-
-                setShowProfile(false);
-
-                setShowAdminProducts(false);
-
-                setShowManageShoes(false);
-
-                setShowOrders(false);
-
-              }}
+              onClick={() =>
+                setActivePage("myorders")
+              }
             >
               My Orders
             </button>
 
             <button
-              onClick={() => {
-
-                setShowProfile(true);
-
-                setShowCart(false);
-
-                setShowAdminProducts(false);
-
-                setShowOrders(false);
-
-                setShowManageShoes(false);
-
-                setShowMyOrders(false);
-
-              }}
+              onClick={() =>
+                setActivePage("profile")
+              }
             >
               Profile
             </button>
@@ -151,81 +98,33 @@ function Navbar({
           <>
 
             <button
-              onClick={() => {
-
-                setShowAdminProducts(true);
-
-                setShowCart(false);
-
-                setShowProfile(false);
-
-                setShowOrders(false);
-
-                setShowManageShoes(false);
-
-                setShowMyOrders(false);
-
-              }}
+              onClick={() =>
+                setActivePage("add")
+              }
             >
               Add Shoes
             </button>
 
             <button
-              onClick={() => {
-
-                setShowManageShoes(true);
-
-                setShowCart(false);
-
-                setShowProfile(false);
-
-                setShowAdminProducts(false);
-
-                setShowOrders(false);
-
-                setShowMyOrders(false);
-
-              }}
+              onClick={() =>
+                setActivePage("manage")
+              }
             >
               Manage Shoes
             </button>
 
             <button
-              onClick={() => {
-
-                setShowOrders(true);
-
-                setShowCart(false);
-
-                setShowProfile(false);
-
-                setShowAdminProducts(false);
-
-                setShowManageShoes(false);
-
-                setShowMyOrders(false);
-
-              }}
+              onClick={() =>
+                setActivePage("orders")
+              }
             >
               Orders
             </button>
 
             <button
-              onClick={() => {
-
-                setShowProfile(true);
-
-                setShowCart(false);
-
-                setShowAdminProducts(false);
-
-                setShowOrders(false);
-
-                setShowManageShoes(false);
-
-                setShowMyOrders(false);
-
-              }}
+              onClick={() =>
+                setActivePage("profile")
+              }
             >
               Profile
             </button>
