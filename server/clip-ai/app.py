@@ -111,6 +111,18 @@ def search_image():
 
             })
 
+        #it shows similarity  similarity values
+
+            print(
+
+    filename,
+
+    "→ Similarity:",
+
+    similarity
+
+)
+
         # REMOVE LOW MATCHES
 
         similarities = [
