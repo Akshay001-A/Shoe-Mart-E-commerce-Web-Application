@@ -78,11 +78,17 @@ The AI analyzes:
 
 ---
 
-# 📸 AI Visual Search Demo
+# 🎥 AI Visual Search Demo
 
-<img src="https://github.com/Akshay001-A/Shoe-Mart-E-commerce-Web-Application/blob/main/screenshots/home.png?raw=true" width="100%"/>
+<div align="center">
 
----
+<a href="YOUR_VIDEO_LINK_HERE">
+  <img src="https://github.com/Akshay001-A/Shoe-Mart-E-commerce-Web-Application/blob/main/screenshots/home.png?raw=true" width="100%"/>
+</a>
+
+### 🚀 Click Above Image To Watch AI Shoe Search Demo
+
+</div>
 
 # ⚡ AI Search Workflow
 
