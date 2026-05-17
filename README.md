@@ -77,16 +77,19 @@ The AI analyzes:
 - Footwear Structure
 
 ---
-
 # 🎥 AI Visual Search Demo
 
 <div align="center">
 
 <a href="https://github.com/user-attachments/assets/3578ef0f-98f0-4121-b124-ee628df2ac84">
-  <img src="https://github.com/Akshay001-A/Shoe-Mart-E-commerce-Web-Application/blob/main/screenshots/home.png?raw=true" width="100%"/>
+  <img src="https://github.com/Akshay001-A/Shoe-Mart-E-commerce-Web-Application/blob/main/screenshots/search.png?raw=true" width="100%"/>
 </a>
 
-### 🚀 Click Above Image To Watch AI Shoe Search Demo
+<br/>
+
+## ▶️ Click Above To Watch Full AI Visual Search Demo
+
+### 🚀 Experience AI-Powered Fashion Recommendation in Action
 
 </div>
 
