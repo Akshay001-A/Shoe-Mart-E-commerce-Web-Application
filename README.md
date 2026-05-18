@@ -434,7 +434,7 @@ MongoDB Product Mapping
 
 # Akshay R 🚀
 
-### Full Stack Developer | MERN Stack Developer | AI Enthusiast
+### Full Stack Developer | MERN Stack Developer 
 
 <p align="center">
   <a href="https://github.com/Akshay001-A">
