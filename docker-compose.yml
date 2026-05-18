@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+
+  backend:
+    image: akshayauthentic/shoemart-backend:latest
+    container_name: shoemart-backend-container
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./server/.env
+
+  frontend:
+    image: akshayauthentic/shoemart-frontend:latest
+    container_name: shoemart-frontend-container
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
