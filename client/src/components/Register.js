@@ -95,7 +95,7 @@ function Register({ setShowRegister }) {
 
       await axios.post(
 
-        "http://localhost:5000/api/auth/register",
+        "http://https://shoemart-backend.onrender.com/api/auth/register",
 
         {
 
