@@ -50,7 +50,7 @@ function Login({ setShowRegister }) {
       const { data } =
         await axios.post(
 
-          "http://https://shoemart-backend.onrender.com/api/auth/login",
+          "http://shoemart-backend.onrender.com/api/auth/login",
 
           {
 

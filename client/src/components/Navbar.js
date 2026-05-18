@@ -87,7 +87,7 @@ function Navbar({
                 const response =
                   await fetch(
 
-                    "http://https://shoemart-backend.onrender.com/api/products/image-search",
+                    "http://shoemart-backend.onrender.com/api/products/image-search",
 
                     {
 
