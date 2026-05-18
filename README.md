@@ -423,8 +423,7 @@ MongoDB Product Mapping
 🔔 Push Notifications  
 📦 Live Order Tracking  
 🤖 AI Fashion Recommendations  
-📊 AI Analytics Dashboard  
-🧠 Personalized Product Suggestions  
+📊 AI Analytics Dashboard   
 
 ---
 
