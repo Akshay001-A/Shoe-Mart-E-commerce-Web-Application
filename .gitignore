@@ -7,3 +7,5 @@ server/.env
 client/.env
 
 client/build/
+
+server/uploads/
