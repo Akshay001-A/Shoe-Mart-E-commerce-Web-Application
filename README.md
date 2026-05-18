@@ -422,7 +422,6 @@ MongoDB Product Mapping
 🌙 Dark Mode Support  
 🔔 Push Notifications  
 📦 Live Order Tracking  
-☁️ Cloud Image Uploads  
 🤖 AI Fashion Recommendations  
 📊 AI Analytics Dashboard  
 🧠 Personalized Product Suggestions  
