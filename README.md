@@ -82,7 +82,7 @@ The AI analyzes:
 <div align="center">
 
 <a href="https://github.com/Akshay001-A/Shoe-Mart-E-commerce-Web-Application/raw/main/demo/Video%20Project.mp4">
-  <img src="https://github.com/Akshay001-A/Shoe-Mart-E-commerce-Web-Application/blob/main/screenshots/search.png?raw=true" width="100%"/>
+  <img src="https://github.com/Akshay001-A/Shoe-Mart-E-commerce-Web-Application/blob/main/screenshots/home.png?raw=true" width="100%"/>
 </a>
 
 <br/>
