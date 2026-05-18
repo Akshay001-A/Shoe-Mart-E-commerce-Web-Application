@@ -95,7 +95,7 @@ function Cart({
     try {
 
       const { data } = await axios.get(
-        "http://shoemart-backend.onrender.com/api/products"
+        "https://shoemart-backend.onrender.com/api/products"
       );
 
       for (const cartItem of cartItems) {
@@ -190,7 +190,7 @@ function Cart({
 
       await axios.post(
 
-        "http://shoemart-backend.onrender.com/api/orders",
+        "https://shoemart-backend.onrender.com/api/orders",
 
         {
 
