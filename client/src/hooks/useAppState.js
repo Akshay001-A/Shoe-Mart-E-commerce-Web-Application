@@ -267,6 +267,26 @@ export default function useAppState() {
     if (userInfo?.isAdmin) {
       fetchOrders();
     }
+
+    const responseInterceptor = axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem("userInfo");
+          setTopMessage("Session Expired. Please log in again. 🔒");
+          setShowTopMessage(true);
+          setTimeout(() => {
+            setShowTopMessage(false);
+            window.location.reload();
+          }, 2500);
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    return () => {
+      axios.interceptors.response.eject(responseInterceptor);
+    };
   }, []);
 
   return {
