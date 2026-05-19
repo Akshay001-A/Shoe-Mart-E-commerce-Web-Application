@@ -421,7 +421,7 @@ MongoDB Product Mapping
 ⭐ Product Reviews & Ratings  
 🌙 Dark Mode Support  
 🔔 Push Notifications  
-📦 Live Order Tracking  
+
 ---
 
 # 👨‍💻 Developed By
