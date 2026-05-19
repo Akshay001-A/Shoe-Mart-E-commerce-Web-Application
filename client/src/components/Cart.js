@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import axios from "axios";
 
+import { API_URL } from "../config";
+
 function Cart({
 
   cartItems,
@@ -109,7 +111,7 @@ function Cart({
     try {
 
       const { data } = await axios.get(
-        "https://shoemart-backend.onrender.com/api/products"
+        `${API_URL}/api/products`
       );
 
       for (const cartItem of cartItems) {
@@ -204,7 +206,7 @@ function Cart({
 
       await axios.post(
 
-        "https://shoemart-backend.onrender.com/api/orders",
+        `${API_URL}/api/orders`,
 
         {
 

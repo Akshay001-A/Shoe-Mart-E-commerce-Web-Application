@@ -4,6 +4,8 @@ import axios from "axios";
 
 import "./Login.css";
 
+import { API_URL } from "../config";
+
 function Register({ setShowRegister }) {
 
   const [name, setName] =
@@ -95,7 +97,7 @@ function Register({ setShowRegister }) {
 
       await axios.post(
 
-        "https://shoemart-backend.onrender.com/api/auth/register",
+        `${API_URL}/api/auth/register`,
 
         {
 

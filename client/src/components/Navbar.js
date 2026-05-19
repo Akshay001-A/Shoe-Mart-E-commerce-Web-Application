@@ -1,5 +1,7 @@
 import "./Navbar.css";
 
+import { API_URL } from "../config";
+
 function Navbar({
 
   setActivePage,
@@ -87,7 +89,7 @@ function Navbar({
                 const response =
                   await fetch(
 
-                    "https://shoemart-backend.onrender.com/api/products/image-search",
+                    `${API_URL}/api/products/image-search`,
 
                     {
 

@@ -4,6 +4,8 @@ import "./App.css";
 
 import { useState, useEffect } from "react";
 
+import { API_URL } from "./config";
+
 import axios from "axios";
 
 import Login from "./components/Login";
@@ -117,7 +119,7 @@ useState("COD");
 
     const { data } = await axios.get(
 
-      "https://shoemart-backend.onrender.com/api/orders",
+      `${API_URL}/api/orders`,
 
       {
         headers: {
@@ -152,7 +154,7 @@ const fetchMyOrders = async () => {
 
     const { data } = await axios.get(
 
-      "https://shoemart-backend.onrender.com/api/orders/myorders",
+      `${API_URL}/api/orders/myorders`,
 
       {
 
@@ -184,7 +186,7 @@ const fetchProducts = async () => {
   try {
 
     const { data } = await axios.get(
-      "https://shoemart-backend.onrender.com/api/products"
+      `${API_URL}/api/products`
     );
 
     setProducts(data);
@@ -348,7 +350,7 @@ const updateQuantity = (
   try {
 
     await axios.delete(
-      `https://shoemart-backend.onrender.com/api/products/${id}`
+      `${API_URL}/api/products/${id}`
     );
 
     const updatedProducts =
@@ -419,14 +421,14 @@ const updateProduct = async () => {
 
     await axios.put(
 
-      `https://shoemart-backend.onrender.com/api/products/${editingProduct._id}`,
+      `${API_URL}/api/products/${editingProduct._id}`,
 
       updatedData
 
     );
 
     const { data } = await axios.get(
-      "https://shoemart-backend.onrender.com/api/products"
+      `${API_URL}/api/products`
     );
 
     setProducts(data);
@@ -490,7 +492,7 @@ const updateOrderStatus = async (
 
     await axios.put(
 
-      `https://shoemart-backend.onrender.com/api/orders/${orderId}/status`,
+      `${API_URL}/api/orders/${orderId}/status`,
 
       {
 
@@ -541,7 +543,7 @@ setTimeout(() => {
   try {
 
     const { data } = await axios.post(
-      "https://shoemart-backend.onrender.com/api/products",
+      `${API_URL}/api/products`,
 
       {
         name: shoeName,
