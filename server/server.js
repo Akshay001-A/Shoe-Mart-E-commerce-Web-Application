@@ -7,6 +7,7 @@ require("dotenv").config();
 const authRoutes = require("./routes/authRoutes");
 const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const chatRoutes = require("./routes/chatRoutes");
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/chat", chatRoutes);
+
 
 app.get("/", (req, res) => {
   res.send("Shoe Mart API Running");

@@ -11,6 +11,7 @@ import AddShoes from "./components/AddShoes";
 import ManageShoes from "./components/ManageShoes";
 import Orders from "./components/Orders";
 import MyOrders from "./components/MyOrders";
+import Chatbot from "./components/Chatbot";
 
 function App() {
   const {
@@ -205,6 +206,7 @@ function App() {
           )
         }
       </div>
+      <Chatbot addToCart={addToCart} />
     </>
   );
 }
