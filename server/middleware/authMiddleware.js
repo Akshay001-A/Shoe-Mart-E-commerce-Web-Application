@@ -51,11 +51,9 @@ const admin = (req, res, next) => {
 
     } else {
 
-        res.status(401);
-
-        throw new Error(
-            "Not authorized as admin"
-        );
+        res.status(401).json({
+            message: "Not authorized as admin",
+        });
 
     }
 
