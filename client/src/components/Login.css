@@ -279,3 +279,38 @@
   }
 
 }
+
+.logo {
+
+  margin: 0 auto 10px auto;
+
+  font-size: 38px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  cursor: pointer;
+
+  background:
+    linear-gradient(
+      45deg,
+      #ffffff,
+      #60a5fa,
+      #a855f7
+    );
+
+  -webkit-background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+
+  transition: 0.3s;
+
+  text-align: center;
+}
+
+.logo:hover {
+
+  transform: scale(1.05);
+}
+

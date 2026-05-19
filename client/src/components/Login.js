@@ -109,6 +109,10 @@ function Login({ setShowRegister }) {
         onSubmit={loginUser}
       >
 
+        <h2 className="logo">
+          Shoe Mart 👟
+        </h2>
+
         <h1>
           Welcome Back 🔥
         </h1>
