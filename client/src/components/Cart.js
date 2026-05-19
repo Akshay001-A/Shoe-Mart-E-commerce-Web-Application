@@ -55,6 +55,20 @@ function Cart({
     itemName
   ) => {
 
+    if (action === "increase") {
+
+      const item = cartItems.find((x) => x._id === id);
+
+      if (item && item.quantity >= item.countInStock) {
+
+        showTopMessage("Out of Stock! Use the correct quantity only");
+
+        return;
+
+      }
+
+    }
+
     updateQuantity(id, action);
 
     if (action === "increase") {
