@@ -1,9 +1,30 @@
+/**
+ * =================================================================================
+ * FRONTEND CHATBOT COMPONENT (Chatbot.js) WITH VISION, VOICE & ORDER HISTORY
+ * =================================================================================
+ * 
+ * WHAT IT DOES:
+ * Renders a high-end collapsible floating conversational interface. It handles:
+ * 1. 🎤 Speech-to-Text inputs natively via the Web Speech API.
+ * 2. 📷 Base64 file attachments for outfit outfit matching.
+ * 3. 👤 Dynamic JWT Authorization headers for personalized customer histories.
+ * 4. 🛒 Dynamic inline product carousels to purchase shoes directly from the chat.
+ * 
+ * WHY WE USE IT:
+ * Brings natural-language interaction, computer vision recommendations, and 
+ * hands-free accessibility together into one beautiful React widget.
+ * 
+ * USEFULNESS:
+ * Turns passive product browsing into a futuristic, conversational shopping spree!
+ */
+
 import { useState, useEffect, useRef } from "react";
 import { API_URL } from "../config";
 import "./Chatbot.css";
 
 function Chatbot({ addToCart }) {
-  const [isOpen, setIsOpen] = useState(false);
+  // --- STATE HOOKS ---
+  const [isOpen, setIsOpen] = useState(false); // Controls chat panel visibility
   const [messages, setMessages] = useState([
     {
       sender: "bot",
@@ -11,32 +32,42 @@ function Chatbot({ addToCart }) {
       products: [],
     },
   ]);
-  const [input, setInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [input, setInput] = useState(""); // Captures keyboard typing inputs
+  const [isLoading, setIsLoading] = useState(false); // Manages bot styling loader states
   
-  // Voice Assist States
-  const [isListening, setIsListening] = useState(false);
-  const [recognition, setRecognition] = useState(null);
+  // Voice Assist States (Speech-to-Text Hooks)
+  const [isListening, setIsListening] = useState(false); // Active microphone state
+  const [recognition, setRecognition] = useState(null); // Reference to the Web Speech engine
 
-  // Visual Multimodal Search States
-  const [selectedImage, setSelectedImage] = useState(null); // { data: "base64", mimeType: "...", preview: "blobUrl" }
-  const fileInputRef = useRef(null);
+  // Visual Multimodal Search States (Upload Hooks)
+  const [selectedImage, setSelectedImage] = useState(null); // Stores base64, mime, and blob preview url
+  const fileInputRef = useRef(null); // Reference to secret file input element
 
-  const messagesEndRef = useRef(null);
+  const messagesEndRef = useRef(null); // Controls auto-scroll viewport anchors
 
-  // Auto scroll to bottom
+  // AUTO-SCROLLER EFFECT
+  // Scrolls the message window to the absolute bottom smoothly when new messages arrive.
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
 
-  // Set up Speech Recognition on component mount
+  /**
+   * ===============================================================================
+   * SPEECH RECOGNITION SETUP (Web Speech API)
+   * ===============================================================================
+   * WHAT IT DOES:
+   * Initializes the browser's native speech-to-text recognition engine.
+   * 
+   * USEFULNESS:
+   * Hands-free accessibility. Converts vocalized sound waves into active text characters.
+   */
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRecognition) {
       const rec = new SpeechRecognition();
-      rec.continuous = false;
-      rec.interimResults = false;
-      rec.lang = "en-IN"; // Supports general English and Indian English accents
+      rec.continuous = false; // Stops recording immediately when the speaker finishes speaking
+      rec.interimResults = false; // Only returns finalized transcriptions
+      rec.lang = "en-IN"; // Configured for Indian English accents
 
       rec.onstart = () => {
         setIsListening(true);
@@ -44,7 +75,7 @@ function Chatbot({ addToCart }) {
 
       rec.onresult = (event) => {
         const transcript = event.results[0][0].transcript;
-        setInput((prev) => (prev ? prev + " " + transcript : transcript));
+        setInput((prev) => (prev ? prev + " " + transcript : transcript)); // Append speech directly to text input
       };
 
       rec.onerror = (event) => {
@@ -60,7 +91,7 @@ function Chatbot({ addToCart }) {
     }
   }, []);
 
-  // Voice recognition toggle
+  // Controls microphone toggle click listeners
   const toggleListening = () => {
     if (!recognition) {
       alert("Speech recognition is not supported in this browser. Please try Chrome, Edge, or Safari.");
@@ -74,7 +105,17 @@ function Chatbot({ addToCart }) {
     }
   };
 
-  // Convert uploaded file to Base64
+  /**
+   * ===============================================================================
+   * FILE TO BASE64 ENCODER (FileReader)
+   * ===============================================================================
+   * WHAT IT DOES:
+   * Reads raw uploaded local images and parses them into a safe base64-encoded string.
+   * 
+   * USEFULNESS:
+   * Enables sending image files to backend Express routes as standard text strings inside 
+   * standard JSON POST requests, avoiding complicated FormData boundaries.
+   */
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -86,49 +127,52 @@ function Chatbot({ addToCart }) {
 
     const reader = new FileReader();
     reader.onloadend = () => {
-      const base64Data = reader.result.split(",")[1];
+      const base64Data = reader.result.split(",")[1]; // Split out header meta data
       setSelectedImage({
         data: base64Data,
         mimeType: file.type,
-        preview: URL.createObjectURL(file),
+        preview: URL.createObjectURL(file), // Generate localized Blob URL for temporary browser display
       });
     };
     reader.readAsDataURL(file);
   };
 
-  // Remove selected image preview
+  // Clears active image attachments and cleans browser memory
   const removeImage = () => {
     if (selectedImage && selectedImage.preview) {
-      URL.revokeObjectURL(selectedImage.preview);
+      URL.revokeObjectURL(selectedImage.preview); // Prevent memory leaks
     }
     setSelectedImage(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  // Handle message send
+  /**
+   * ===============================================================================
+   * CORE MESSAGE PIPELINE (handleSend)
+   * ===============================================================================
+   * WHAT IT DOES:
+   * Packages user prompts, history buffers, base64 images, and authorization tokens, 
+   * sends them to the Node/Express server, and renders the natural language response.
+   */
   const handleSend = async (textToSend) => {
     let queryText = textToSend || input;
 
-    // Use default text prompt if they upload an image but type nothing
+    // Auto-prompt fallback if the user attaches an outfit but forgets to write text
     if (!queryText.trim() && selectedImage) {
       queryText = "Suggest the perfect shoes in your collection to match this outfit!";
     }
 
     if (!queryText.trim()) return;
 
-    // Clear input
     if (!textToSend) {
       setInput("");
     }
 
-    // Keep references to active selected image
     const activeImage = selectedImage;
-    
-    // Clear preview image before API call
     setSelectedImage(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
 
-    // Add user message
+    // Append user message instantly to visual conversation thread
     const userMsg = { 
       sender: "user", 
       text: queryText, 
@@ -140,16 +184,20 @@ function Chatbot({ addToCart }) {
     setIsLoading(true);
 
     try {
-      // Gather chat history (excluding the first greeting, only passing last 6 messages)
+      // Gather last 6 active conversation turns as a rolling memory buffer
       const chatHistory = updatedMessages.slice(-6).map((msg) => ({
         sender: msg.sender,
         text: msg.text,
       }));
 
+      // Pull customer credentials for personalized greetings
+      const userInfoLocal = JSON.parse(localStorage.getItem("userInfo"));
+
       const response = await fetch(`${API_URL}/api/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          ...(userInfoLocal && userInfoLocal.token ? { "Authorization": `Bearer ${userInfoLocal.token}` } : {}),
         },
         body: JSON.stringify({
           message: queryText,
@@ -166,7 +214,7 @@ function Chatbot({ addToCart }) {
           {
             sender: "bot",
             text: data.message,
-            products: data.products || [],
+            products: data.products || [], // Inline database matches
           },
         ]);
       } else {
@@ -184,8 +232,8 @@ function Chatbot({ addToCart }) {
       ]);
     } finally {
       setIsLoading(false);
-      // Clean up blob URL memory
       if (activeImage && activeImage.preview) {
+        // Clean up visual Blob URL from browser RAM after delay
         setTimeout(() => URL.revokeObjectURL(activeImage.preview), 3000);
       }
     }
@@ -206,7 +254,7 @@ function Chatbot({ addToCart }) {
 
   return (
     <div className="chatbot-wrapper">
-      {/* Floating Chat Button */}
+      {/* Floating Chat Trigger Button */}
       {!isOpen && (
         <button
           className="chatbot-toggle-btn"
@@ -218,10 +266,10 @@ function Chatbot({ addToCart }) {
         </button>
       )}
 
-      {/* Chat Box Container */}
+      {/* Main Chat Frame */}
       {isOpen && (
         <div className="chatbot-container">
-          {/* Header */}
+          {/* Header Panel */}
           <div className="chatbot-header">
             <div className="chatbot-header-info">
               <span className="chatbot-avatar-status"></span>
@@ -235,7 +283,7 @@ function Chatbot({ addToCart }) {
             </button>
           </div>
 
-          {/* Messages Viewport */}
+          {/* Interactive Chat Thread Area */}
           <div className="chatbot-messages">
             {messages.map((msg, index) => (
               <div
@@ -250,7 +298,7 @@ function Chatbot({ addToCart }) {
                 
                 <div className="chatbot-message-bubble-wrapper">
                   <div className="chatbot-message-bubble">
-                    {/* Render visual search upload in message history */}
+                    {/* Render visual upload previews in history cards */}
                     {msg.imagePreview && (
                       <div className="chatbot-message-image-wrapper">
                         <img
@@ -263,7 +311,7 @@ function Chatbot({ addToCart }) {
                     <p className="chatbot-message-text">{msg.text}</p>
                   </div>
 
-                  {/* Inline Product Recommendations Carousel */}
+                  {/* Dynamic Product Recommendation Carousels */}
                   {msg.products && msg.products.length > 0 && (
                     <div className="chatbot-products-carousel">
                       {msg.products.map((product) => (
@@ -282,7 +330,7 @@ function Chatbot({ addToCart }) {
                               <button
                                 onClick={() => {
                                   addToCart(product);
-                                  // Add visual response
+                                  // Quick conversational purchase indicator
                                   setMessages((prev) => [
                                     ...prev,
                                     {
@@ -310,7 +358,7 @@ function Chatbot({ addToCart }) {
               </div>
             ))}
 
-            {/* Typing Loader */}
+            {/* AI Typing Indicator Dots */}
             {isLoading && (
               <div className="chatbot-message-row bot-row">
                 <div className="chatbot-msg-avatar">🤖</div>
@@ -327,7 +375,7 @@ function Chatbot({ addToCart }) {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Quick Suggestions */}
+          {/* Quick Styling Suggestion Chips */}
           {messages.length === 1 && !isLoading && (
             <div className="chatbot-suggestions">
               {quickSuggestions.map((suggestion, idx) => (
@@ -342,7 +390,7 @@ function Chatbot({ addToCart }) {
             </div>
           )}
 
-          {/* Selected Image Attachment Preview before sending */}
+          {/* Selected Attachment Preview Panel */}
           {selectedImage && (
             <div className="chatbot-image-upload-preview-container">
               <div className="chatbot-image-preview-wrapper">
@@ -362,9 +410,9 @@ function Chatbot({ addToCart }) {
             </div>
           )}
 
-          {/* Input Area */}
+          {/* User Input controls */}
           <div className="chatbot-input-area">
-            {/* Hidden File Input */}
+            {/* Hidden native input uploader */}
             <input
               type="file"
               accept="image/*"
@@ -373,7 +421,7 @@ function Chatbot({ addToCart }) {
               style={{ display: "none" }}
             />
 
-            {/* Attach Image Button */}
+            {/* 📷 Outfit Camera Trigger */}
             <button
               type="button"
               className="chatbot-attach-btn"
@@ -384,7 +432,7 @@ function Chatbot({ addToCart }) {
               📷
             </button>
 
-            {/* Voice Control Button */}
+            {/* 🎤 Web Speech Microphone button */}
             <button
               type="button"
               className={`chatbot-mic-btn ${isListening ? "listening" : ""}`}

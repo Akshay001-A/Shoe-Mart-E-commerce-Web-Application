@@ -491,9 +491,13 @@
   }
 }
 
-/* --- Added Upgrades (Multimodal & Voice Interface) --- */
+/* --- Added Upgrades (Multimodal & Voice Interface Styling) --- 
+   WHAT IT DOES: Sets layout rules, custom states, animations, and sizes for our new
+   camera (📷) and microphone (🎤) triggers, active voice loops, and outfit thumbnail views.
+   WHY WE USE IT: To ensure full CSS alignment and beautiful visual feedback in the UI.
+*/
 
-/* Camera & Microphone Triggers */
+/* 1. Camera & Microphone Input Triggers */
 .chatbot-attach-btn,
 .chatbot-mic-btn {
   background: rgba(255, 255, 255, 0.05);
@@ -511,6 +515,7 @@
   flex-shrink: 0;
 }
 
+/* Fluid Hover and Active states for responsive triggers */
 .chatbot-attach-btn:hover,
 .chatbot-mic-btn:hover {
   background: rgba(124, 58, 237, 0.15);
@@ -525,7 +530,10 @@
   cursor: not-allowed;
 }
 
-/* Pulsing Voice Recognition State */
+/* 2. Active Pulsing Voice Recognition State
+   WHAT IT DOES: Animates a soft glowing red circle overlay around the mic icon.
+   USEFULNESS: Gives instant visual cues to the shopper that the browser is listening to their voice.
+*/
 .chatbot-mic-btn.listening {
   background: linear-gradient(135deg, #ef4444, #f43f5e);
   border-color: rgba(255, 255, 255, 0.3);
@@ -534,6 +542,7 @@
   box-shadow: 0 0 12px rgba(239, 68, 68, 0.5);
 }
 
+/* Pulsing Voice Keyframe Loop */
 @keyframes pulse-mic {
   0% {
     transform: scale(1);
@@ -549,7 +558,7 @@
   }
 }
 
-/* Uploaded Attachment Preview (above input area) */
+/* 3. Uploaded Attachment Preview Chip (Renders above text input) */
 .chatbot-image-upload-preview-container {
   padding: 10px 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
@@ -574,6 +583,7 @@
   object-fit: cover;
 }
 
+/* Clean Cancel button on the preview thumbnail chip */
 .chatbot-image-upload-remove-btn {
   position: absolute;
   top: 2px;
@@ -589,14 +599,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s;
+  transition: all 0.25s;
 }
 
 .chatbot-image-upload-remove-btn:hover {
   background: #ef4444;
 }
 
-/* Chat bubble Image Attachment content (Message History) */
+/* 4. Chat history Outfit bubble styling (User Dialogue Thread) */
 .chatbot-message-image-wrapper {
   max-width: 100%;
   margin-bottom: 8px;

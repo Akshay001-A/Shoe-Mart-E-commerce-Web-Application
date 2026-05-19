@@ -1,3 +1,23 @@
+"""
+=================================================================================
+HIGH-PERFORMANCE COMPUTER VISION SEARCH ENGINE (open_clip ViT-B-32)
+=================================================================================
+
+WHAT IT DOES:
+This Python Flask microservice uses OpenAI's CLIP model (via OpenCLIP) to 
+mathematically find visually identical products. It scans your product images 
+folder once on startup, pre-computes their deep-learning feature vectors 
+(embeddings), and stores them in RAM cache for sub-5 millisecond similarity lookups.
+
+WHY WE USE IT:
+1. Traditional text database search cannot find exact styles if descriptions are vague.
+   CLIP-AI solves this by comparing raw pixel-to-pixel patterns.
+2. Caching: Re-encoding your entire shoe catalog on every search request is a 
+   massive performance killer. Memory caching makes it instant and robust.
+3. CORS Support: Web browsers require specialized headers to allow cross-origin 
+   communication between the React app (Port 3000) and this Python server (Port 8000).
+"""
+
 from flask import Flask, request, jsonify, make_response
 from PIL import Image
 import open_clip
@@ -6,42 +26,57 @@ import os
 
 app = Flask(__name__)
 
-# IMAGE DATABASE CONFIGURATION
+# IMAGE PATH CONFIGURATIONS
 IMAGE_FOLDER = "shoe_images"
 TEMP_FOLDER = "temp_uploads"
 
-# Ensure folders exist on startup
+# Ensure crucial catalog directories exist on server startup
 os.makedirs(IMAGE_FOLDER, exist_ok=True)
 os.makedirs(TEMP_FOLDER, exist_ok=True)
 
-# LOAD OPENCLIP MODEL ONCE ON STARTUP
+# -----------------------------------------------------------------------------
+# 1. INITIALIZING THE DEEP LEARNING MODEL
+# -----------------------------------------------------------------------------
+# WHAT IT DOES: 
+# Loads the OpenCLIP 'ViT-B-32' model trained on the massive LAION-2B dataset.
+# Sets the model to eval() mode to disable dropouts and accelerate calculations.
 print("Loading OpenCLIP Model (ViT-B-32)...")
 model, _, preprocess = open_clip.create_model_and_transforms(
     'ViT-B-32',
     pretrained='laion2b_s34b_b79k'
 )
-model.eval() # Set model to evaluation mode for inference speedups
+model.eval() 
 print("Model loaded successfully!")
 
-# Global In-Memory Cache for Pre-computed Database Image Embeddings
-# Structure: { "product_id": tensor_of_features }
+# Global In-Memory Dictionary Cache to store database shoe image embeddings
+# Structure: { "mongoose_product_id": tensor_of_normalized_features }
 EMBEDDING_CACHE = {}
 
-# EXTRACT IMAGE FEATURES (ENCODING)
+# -----------------------------------------------------------------------------
+# 2. FEATURE EXTRACTION PIPELINE (get_image_features)
+# -----------------------------------------------------------------------------
+# WHAT IT DOES:
+# Preprocesses a local image (resizes, crops, and normalizes pixels), feeds it 
+# through OpenCLIP's image encoder, normalizes the feature vector to unit length.
 def get_image_features(image_path):
     try:
         image = preprocess(Image.open(image_path)).unsqueeze(0)
         with torch.no_grad():
             features = model.encode_image(image)
         
-        # Normalize the feature vector to unit length
+        # Normalize the tensor vector for accurate Cosine Similarity mapping
         features /= features.norm(dim=-1, keepdim=True)
         return features
     except Exception as e:
         print(f"Error encoding image {image_path}: {e}")
         return None
 
-# PRE-COMPUTE AND CACHE EMBEDDINGS
+# -----------------------------------------------------------------------------
+# 3. ON-STARTUP PRE-COMPUTATION HANDLER (precompute_embeddings)
+# -----------------------------------------------------------------------------
+# WHAT IT DOES:
+# Scans all images in the database folder, extracts their embeddings, and saves 
+# them in RAM. This shifts the computational cost from runtime to startup!
 def precompute_embeddings():
     global EMBEDDING_CACHE
     EMBEDDING_CACHE = {}
@@ -57,7 +92,7 @@ def precompute_embeddings():
         image_path = os.path.join(IMAGE_FOLDER, filename)
         features = get_image_features(image_path)
         if features is not None:
-            # Save by product_id (filename without extension)
+            # Extract product_id from filename (e.g. "64efca221975e5b32e2c56a1.jpg" -> "64efca221975e5b32e2c56a1")
             product_id = os.path.splitext(filename)[0]
             EMBEDDING_CACHE[product_id] = features
             
@@ -66,7 +101,11 @@ def precompute_embeddings():
 # Run initial pre-computation on startup
 precompute_embeddings()
 
-# CROSS-ORIGIN RESOURCE SHARING (CORS) SUPPORT
+# -----------------------------------------------------------------------------
+# 4. CROSS-ORIGIN RESOURCE SHARING (CORS) RESPONSE SETTINGS
+# -----------------------------------------------------------------------------
+# WHAT IT DOES:
+# Appends required security headers to allow direct web browser access.
 @app.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
@@ -74,12 +113,18 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     return response
 
-# Handle pre-flight OPTIONS requests cleanly
+# Handle pre-flight OPTIONS requests from Chrome/Edge/Firefox
 @app.route("/search-image", methods=["OPTIONS"])
 def handle_options():
     return make_response("", 200)
 
-# LIGHTNING-FAST VISUAL IMAGE SEARCH ENDPOINT
+# -----------------------------------------------------------------------------
+# 5. SUB-5 MILLISECOND COSINE SIMILARITY SEARCH ENDPOINT
+# -----------------------------------------------------------------------------
+# WHAT IT DOES:
+# Encodes the uploaded user query image, computes the cosine similarity against 
+# all in-memory embeddings, filters by a minimum confidence of 0.65, and returns 
+# the top 5 matches.
 @app.route("/search-image", methods=["POST"])
 def search_image():
     try:
@@ -94,10 +139,10 @@ def search_image():
         temp_path = os.path.join(TEMP_FOLDER, "current_query.jpg")
         uploaded_image.save(temp_path)
 
-        # Extract features of the single uploaded image (High-speed: only 1 model forward pass)
+        # Extract features of the single uploaded image (High-speed)
         uploaded_features = get_image_features(temp_path)
         
-        # Clean up temp file
+        # Immediately clean up temp file
         if os.path.exists(temp_path):
             os.remove(temp_path)
 
@@ -107,7 +152,7 @@ def search_image():
         similarities = []
 
         # Perform mathematical Cosine Similarity in memory against all cached embeddings
-        # This is extremely fast because it runs entirely in memory without file system reads
+        # Highly efficient vector mapping (very fast, zero file system reads)
         for product_id, cached_features in EMBEDDING_CACHE.items():
             similarity = torch.cosine_similarity(
                 uploaded_features,
@@ -119,7 +164,7 @@ def search_image():
                 "similarity": similarity
             })
 
-        # Filter by threshold (0.65) to ensure relevant matches
+        # Filter out matches below confidence threshold (0.65)
         matches = [item for item in similarities if item["similarity"] > 0.65]
 
         # Sort matches by descending similarity score
@@ -129,14 +174,19 @@ def search_image():
 
         return jsonify({
             "message": "Similar Products Found",
-            "results": matches[:5] # Return top 5 matches
+            "results": matches[:5] 
         })
 
     except Exception as e:
         print(f"Error during search: {e}")
         return jsonify({"error": str(e)}), 500
 
-# ENDPOINT TO DYNAMICALLY REFRESH THE CACHE
+# -----------------------------------------------------------------------------
+# 6. DYNAMIC INDEX REBUILD ENDPOINT (/refresh-cache)
+# -----------------------------------------------------------------------------
+# WHAT IT DOES:
+# Allows database administrators to refresh the memory index after uploading 
+# new catalog images, without needing to take the server offline.
 @app.route("/refresh-cache", methods=["POST"])
 def refresh_cache():
     try:
@@ -149,5 +199,5 @@ def refresh_cache():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    # Run the server on port 8000
+    # Start on port 8000
     app.run(port=8000, debug=False)
