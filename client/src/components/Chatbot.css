@@ -490,3 +490,128 @@
     height: 520px;
   }
 }
+
+/* --- Added Upgrades (Multimodal & Voice Interface) --- */
+
+/* Camera & Microphone Triggers */
+.chatbot-attach-btn,
+.chatbot-mic-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.chatbot-attach-btn:hover,
+.chatbot-mic-btn:hover {
+  background: rgba(124, 58, 237, 0.15);
+  border-color: rgba(124, 58, 237, 0.4);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.chatbot-attach-btn:disabled,
+.chatbot-mic-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Pulsing Voice Recognition State */
+.chatbot-mic-btn.listening {
+  background: linear-gradient(135deg, #ef4444, #f43f5e);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+  animation: pulse-mic 1.5s infinite;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.5);
+}
+
+@keyframes pulse-mic {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+/* Uploaded Attachment Preview (above input area) */
+.chatbot-image-upload-preview-container {
+  padding: 10px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(15, 23, 42, 0.7);
+  display: flex;
+  align-items: center;
+}
+
+.chatbot-image-preview-wrapper {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.chatbot-image-upload-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.chatbot-image-upload-remove-btn {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 16px;
+  height: 16px;
+  background: rgba(15, 23, 42, 0.85);
+  border: none;
+  color: white;
+  border-radius: 50%;
+  font-size: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.chatbot-image-upload-remove-btn:hover {
+  background: #ef4444;
+}
+
+/* Chat bubble Image Attachment content (Message History) */
+.chatbot-message-image-wrapper {
+  max-width: 100%;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.chatbot-message-image-content {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  max-height: 150px;
+  object-fit: cover;
+  display: block;
+}
+

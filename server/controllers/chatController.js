@@ -37,7 +37,7 @@ async function searchShoesDb({ keyword, category, brand, minPrice, maxPrice }) {
 
 // Controller logic for chat
 const handleChat = async (req, res) => {
-  const { message, history } = req.body;
+  const { message, history, image } = req.body;
 
   if (!message) {
     return res.status(400).json({ message: "Message is required" });
@@ -158,8 +158,22 @@ const handleChat = async (req, res) => {
       history: formattedHistory,
     });
 
+    // Handle multimodal image payload if present
+    let messagePayload = message;
+    if (image && image.data && image.mimeType) {
+      messagePayload = [
+        {
+          inlineData: {
+            data: image.data,
+            mimeType: image.mimeType,
+          },
+        },
+        { text: message },
+      ];
+    }
+
     // Send user message
-    const result = await chat.sendMessage(message);
+    const result = await chat.sendMessage(messagePayload);
     const functionCalls = result.response.functionCalls();
 
     // Check if the AI called a function

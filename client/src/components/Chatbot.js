@@ -7,13 +7,21 @@ function Chatbot({ addToCart }) {
   const [messages, setMessages] = useState([
     {
       sender: "bot",
-      text: "Hello! I am your Shoe Mart Fashion Guru 👟✨. Ask me any fashion advice, outfit matching tips, or shoe recommendations!",
+      text: "Hello! I am your Shoe Mart Fashion Guru 👟✨. Ask me any fashion advice, outfit matching tips, or shoe recommendations! You can also tap the 📷 icon to upload your outfit image, or the 🎤 icon to speak to me!",
       products: [],
     },
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   
+  // Voice Assist States
+  const [isListening, setIsListening] = useState(false);
+  const [recognition, setRecognition] = useState(null);
+
+  // Visual Multimodal Search States
+  const [selectedImage, setSelectedImage] = useState(null); // { data: "base64", mimeType: "...", preview: "blobUrl" }
+  const fileInputRef = useRef(null);
+
   const messagesEndRef = useRef(null);
 
   // Auto scroll to bottom
@@ -21,9 +29,91 @@ function Chatbot({ addToCart }) {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
 
+  // Set up Speech Recognition on component mount
+  useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const rec = new SpeechRecognition();
+      rec.continuous = false;
+      rec.interimResults = false;
+      rec.lang = "en-IN"; // Supports general English and Indian English accents
+
+      rec.onstart = () => {
+        setIsListening(true);
+      };
+
+      rec.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setInput((prev) => (prev ? prev + " " + transcript : transcript));
+      };
+
+      rec.onerror = (event) => {
+        console.error("Speech recognition error:", event.error);
+        setIsListening(false);
+      };
+
+      rec.onend = () => {
+        setIsListening(false);
+      };
+
+      setRecognition(rec);
+    }
+  }, []);
+
+  // Voice recognition toggle
+  const toggleListening = () => {
+    if (!recognition) {
+      alert("Speech recognition is not supported in this browser. Please try Chrome, Edge, or Safari.");
+      return;
+    }
+
+    if (isListening) {
+      recognition.stop();
+    } else {
+      recognition.start();
+    }
+  };
+
+  // Convert uploaded file to Base64
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      alert("Please select a valid image file.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64Data = reader.result.split(",")[1];
+      setSelectedImage({
+        data: base64Data,
+        mimeType: file.type,
+        preview: URL.createObjectURL(file),
+      });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Remove selected image preview
+  const removeImage = () => {
+    if (selectedImage && selectedImage.preview) {
+      URL.revokeObjectURL(selectedImage.preview);
+    }
+    setSelectedImage(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
   // Handle message send
   const handleSend = async (textToSend) => {
-    const queryText = textToSend || input;
+    let queryText = textToSend || input;
+
+    // Use default text prompt if they upload an image but type nothing
+    if (!queryText.trim() && selectedImage) {
+      queryText = "Suggest the perfect shoes in your collection to match this outfit!";
+    }
+
     if (!queryText.trim()) return;
 
     // Clear input
@@ -31,14 +121,26 @@ function Chatbot({ addToCart }) {
       setInput("");
     }
 
+    // Keep references to active selected image
+    const activeImage = selectedImage;
+    
+    // Clear preview image before API call
+    setSelectedImage(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+
     // Add user message
-    const userMsg = { sender: "user", text: queryText, products: [] };
+    const userMsg = { 
+      sender: "user", 
+      text: queryText, 
+      products: [], 
+      imagePreview: activeImage ? activeImage.preview : null 
+    };
     const updatedMessages = [...messages, userMsg];
     setMessages(updatedMessages);
     setIsLoading(true);
 
     try {
-      // Gather chat history (excluding the very first greeting if desired, but passing last 6 is fine)
+      // Gather chat history (excluding the first greeting, only passing last 6 messages)
       const chatHistory = updatedMessages.slice(-6).map((msg) => ({
         sender: msg.sender,
         text: msg.text,
@@ -52,6 +154,7 @@ function Chatbot({ addToCart }) {
         body: JSON.stringify({
           message: queryText,
           history: chatHistory,
+          image: activeImage ? { data: activeImage.data, mimeType: activeImage.mimeType } : null,
         }),
       });
 
@@ -81,6 +184,10 @@ function Chatbot({ addToCart }) {
       ]);
     } finally {
       setIsLoading(false);
+      // Clean up blob URL memory
+      if (activeImage && activeImage.preview) {
+        setTimeout(() => URL.revokeObjectURL(activeImage.preview), 3000);
+      }
     }
   };
 
@@ -143,6 +250,16 @@ function Chatbot({ addToCart }) {
                 
                 <div className="chatbot-message-bubble-wrapper">
                   <div className="chatbot-message-bubble">
+                    {/* Render visual search upload in message history */}
+                    {msg.imagePreview && (
+                      <div className="chatbot-message-image-wrapper">
+                        <img
+                          src={msg.imagePreview}
+                          alt="Uploaded Outfit"
+                          className="chatbot-message-image-content"
+                        />
+                      </div>
+                    )}
                     <p className="chatbot-message-text">{msg.text}</p>
                   </div>
 
@@ -225,11 +342,62 @@ function Chatbot({ addToCart }) {
             </div>
           )}
 
+          {/* Selected Image Attachment Preview before sending */}
+          {selectedImage && (
+            <div className="chatbot-image-upload-preview-container">
+              <div className="chatbot-image-preview-wrapper">
+                <img
+                  src={selectedImage.preview}
+                  alt="Selected Outfit"
+                  className="chatbot-image-upload-preview"
+                />
+                <button
+                  className="chatbot-image-upload-remove-btn"
+                  onClick={removeImage}
+                  title="Remove image"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Input Area */}
           <div className="chatbot-input-area">
+            {/* Hidden File Input */}
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              onChange={handleImageChange}
+              style={{ display: "none" }}
+            />
+
+            {/* Attach Image Button */}
+            <button
+              type="button"
+              className="chatbot-attach-btn"
+              onClick={() => fileInputRef.current?.click()}
+              title="Attach outfit image"
+              disabled={isLoading}
+            >
+              📷
+            </button>
+
+            {/* Voice Control Button */}
+            <button
+              type="button"
+              className={`chatbot-mic-btn ${isListening ? "listening" : ""}`}
+              onClick={toggleListening}
+              title={isListening ? "Listening... click to stop" : "Speak to fashion assistant"}
+              disabled={isLoading}
+            >
+              🎤
+            </button>
+
             <input
               type="text"
-              placeholder="Ask for style matching, recommendations..."
+              placeholder={isListening ? "Listening... speak now" : "Ask for style matching, recommendations..."}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyPress}
@@ -239,7 +407,7 @@ function Chatbot({ addToCart }) {
             <button
               onClick={() => handleSend()}
               className="chatbot-send-btn"
-              disabled={!input.trim() || isLoading}
+              disabled={(!input.trim() && !selectedImage) || isLoading}
             >
               ➤
             </button>
