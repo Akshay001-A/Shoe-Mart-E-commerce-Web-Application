@@ -52,6 +52,17 @@ The **Shoe Mart Fashion Guru** is a premium, collapsable AI chatbot floating dir
 * **🛠️ Direct Database Integration (Function Calling)**: Instead of hallucinating shoes that do not exist, Gemini is declared with active database tools. When asked for suggestions, the AI executes a MongoDB query to fetch real-time stock and display shoes instantly.
 * **🛒 Interactive Checkout Carousel**: Matching shoes are rendered inside an interactive horizontal product carousel right inside the chat window. Users can add products to their shopping cart with a single click inside the chat.
 
+
+# 🤖 AI Chatbot Preview
+
+<div align="center">
+
+<img src="https://github.com/Akshay001-A/Shoe-Mart-E-commerce-Web-Application/blob/main/screenshots/chatbot.png?raw=true" width="100%"/>
+
+### 💬 Integrated AI Shopping Assistant
+
+</div>
+
 ---
 
 # ⚡ Dual AI Search Architecture
@@ -102,7 +113,20 @@ The Python **`clip-ai`** Flask microservice has been completely optimized to fol
 * **🌐 Cross-Origin Headers (CORS)**: Built native response header wrappers to support pre-flight requests, enabling React (Port 3000) to communicate directly with Flask (Port 8000) seamlessly.
 * **📦 Dynamic Cache Refresh**: Includes a `/refresh-cache` POST endpoint. If administrators add new products to the catalog, they can rebuild the embedding cache dynamically in real-time without needing to restart the Python process.
 
+
+# 📸 AI Visual Search Demo
+
+<div align="center">
+
+<img src="https://github.com/Akshay001-A/Shoe-Mart-E-commerce-Web-Application/blob/main/screenshots/search.png?raw=true" width="100%"/>
+
+### 🤖 AI Visual Product Matching System
+
+</div>
+
 ---
+
+
 
 # 🧰 Technology Stack
 
@@ -133,7 +157,7 @@ The Python **`clip-ai`** Flask microservice has been completely optimized to fol
 # 📸 Application Screenshots
 
 ### 🏠 Storefront Catalog
-<img src="https://github.com/Akshay001-A/Shoe-Mart-E-commerce-Web-Application/blob/main/screenshots/home.png?raw=true" width="100%"/>
+<img src="https://github.com/Akshay001-A/Shoe-Mart-E-commerce-Web-Application/blob/main/screenshots/home1.png?raw=true" width="100%"/>
 
 ---
 
@@ -144,6 +168,12 @@ The Python **`clip-ai`** Flask microservice has been completely optimized to fol
 
 ### 🛠️ Admin Stock Dashboard
 <img src="https://github.com/Akshay001-A/Shoe-Mart-E-commerce-Web-Application/blob/main/screenshots/admin.png?raw=true" width="100%"/>
+
+---
+
+### 👤 Profile Dashboard
+
+<img src="https://github.com/Akshay001-A/Shoe-Mart-E-commerce-Web-Application/blob/main/screenshots/profile.png?raw=true" width="100%"/>
 
 ---
 
@@ -177,46 +207,157 @@ SHOE-MART/
 
 # ⚙️ Installation & Setup Guide
 
-### 1️⃣ Clone the Repository
+---
+
+# 🐳 Docker Support
+
+This project includes complete Docker support.
+
+Users can run the entire project without manually installing all dependencies.
+
+---
+
+# 🐳 Run Using Docker
+
+## 1️⃣ Clone Repository
+
 ```bash
 git clone https://github.com/Akshay001-A/Shoe-Mart-E-commerce-Web-Application.git
+```
+
+---
+
+## 2️⃣ Navigate To Project
+
+```bash
 cd Shoe-Mart-E-commerce-Web-Application
 ```
 
-### 2️⃣ Configure Environment Variables
-Create a `.env` file inside the `server/` directory:
-```env
-PORT=5000
-MONGO_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/shoemart
-JWT_SECRET=your_super_secret_jwt_key
-GEMINI_API_KEY=your_google_ai_studio_gemini_api_key
+---
+
+## 3️⃣ Start Docker
+
+Make sure Docker Desktop is running.
+
+---
+
+## 4️⃣ Run Entire Project
+
+```bash
+docker-compose up --build
 ```
 
-Create a `.env` file inside the `client/` directory:
-```env
-REACT_APP_API_URL=http://localhost:5000
+---
+
+# ✅ Application Runs Automatically
+
+This command starts:
+
+✅ React Frontend  
+✅ Node.js Backend  
+✅ Flask AI Server  
+✅ MongoDB Services  
+✅ AI Search Engine  
+
+---
+
+# 🌐 Open Application
+
+Frontend:
+
+```bash
+http://localhost:3000
 ```
 
-### 3️⃣ Setup the React Frontend
+Backend:
+
+```bash
+http://localhost:5000
+```
+
+AI Flask Server:
+
+```bash
+http://localhost:5001
+```
+
+---
+
+# ⚙️ Manual Installation Guide
+
+# 1️⃣ Clone Repository
+
+```bash
+git clone https://github.com/Akshay001-A/Shoe-Mart-E-commerce-Web-Application.git
+```
+
+---
+
+# 2️⃣ Install Frontend Dependencies
+
 ```bash
 cd client
 npm install
+```
+
+---
+
+# 3️⃣ Install Backend Dependencies
+
+```bash
+cd ../server
+npm install
+```
+
+---
+
+# 4️⃣ Install AI Server Dependencies
+
+```bash
+cd clip-ai
+pip install flask torch torchvision pillow open_clip_torch
+```
+
+---
+
+# ▶️ Start Backend
+
+```bash
+cd ..
 npm start
 ```
 
-### 4️⃣ Setup the Express Backend
+---
+
+# ▶️ Start Frontend
+
 ```bash
-cd server
-npm install
-npm run dev
+cd ../client
+npm start
 ```
 
-### 5️⃣ Setup the Python CLIP-AI Server
-Ensure you have Python 3.8+ installed:
+---
+
+# ▶️ Start AI Flask Server
+
 ```bash
-cd server/clip-ai
-pip install -r requirements.txt
+cd ../server/clip-ai
 python app.py
+```
+
+---
+
+# 🌐 Environment Variables
+
+Create `.env` inside server folder:
+
+```env
+MONGO_URI=your_mongodb_connection
+JWT_SECRET=your_secret_key
+PORT=5000
+```
+
+
 ```
 *(The Flask app will auto-create folder directories and pre-cache your image embeddings immediately!)*
 
