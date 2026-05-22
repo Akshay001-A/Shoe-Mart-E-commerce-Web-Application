@@ -358,9 +358,6 @@ PORT=5000
 ```
 
 
-```
-*(The Flask app will auto-create folder directories and pre-cache your image embeddings immediately!)*
-
 ---
 
 # 👨‍💻 Developed By
