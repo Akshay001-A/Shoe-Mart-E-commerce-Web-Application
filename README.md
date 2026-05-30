@@ -190,7 +190,7 @@ SHOE-MART/
 │       │   └── Cart.js         # Interactive Checkout
 │       └── config.js           # Dynamic environment target
 ├── server/
-│   ├── config/                 # DB connections
+│   ├── config/                 # DB 
 │   ├── controllers/
 │   │   └── chatController.js   # Gemini 2.5 API & history sanitization
 │   ├── models/                 # MongoDB Mongoose schemas
