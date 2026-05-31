@@ -186,7 +186,7 @@ SHOE-MART/
 │   └── src/
 │       ├── components/
 │       │   ├── Chatbot.js      # Voice & Multimodal Chatbot UI
-│       │   ├── Chatbot.css     # Premium pulsing mic animations
+│       │   ├── Chatbot.css     # Premium pulsing mic animations.
 │       │   └── Cart.js         # Interactive Checkout
 │       └── config.js           # Dynamic environment target
 ├── server/
