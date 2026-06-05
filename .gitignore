@@ -9,3 +9,5 @@ client/.env
 client/build/
 
 server/uploads/
+
+venv/
