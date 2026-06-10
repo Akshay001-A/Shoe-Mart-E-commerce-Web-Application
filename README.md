@@ -198,7 +198,7 @@ SHOE-MART/
 │   │   ├── shoe_images/        # Visual Search Database Index
 │   │   ├── app.py              # Optimized Flask cache API
 │   │   └── requirements.txt
-│   └── server.js               # Express entrypoint
+│   └── server.js              
 ├── screenshots/
 └── README.md
 ```
